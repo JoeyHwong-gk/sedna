@@ -139,9 +139,11 @@ class MulTaskLearning:
             if not isinstance(task, TaskGroup):
                 rare_task.append(i)
                 self.models.append(None)
+                self.task_groups.append(None)
                 continue
             if not (task.samples and len(task.samples) > self.min_train_sample):
                 self.models.append(None)
+                self.task_groups.append(None)
                 rare_task.append(i)
                 n = len(task.samples)
                 sednaLogger.info(f"MTL Train Fail because of num  {n}  too least: {task.entry}")
