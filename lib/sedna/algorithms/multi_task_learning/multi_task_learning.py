@@ -127,14 +127,14 @@ class MulTaskLearning:
               post_process=None, **kwargs):
         tasks, task_extractor = self.task_definition(train_data)
         self.extractor = task_extractor
-        self.task_groups = self.task_relationship_discovery(tasks)
+        task_groups = self.task_relationship_discovery(tasks)
         self.models = []
         callback = None
         if post_process:
             callback = ClassFactory.get_cls(ClassType.CALLBACK, post_process)()
-
+        self.task_groups = []
         feedback = {}
-        for i, task in enumerate(self.task_groups):
+        for i, task in enumerate(task_groups):
             if not isinstance(task, TaskGroup):
                 continue
             if not (task.samples and len(task.samples) > self.min_train_sample):
@@ -153,6 +153,7 @@ class MulTaskLearning:
             task.model = model
             self.models.append(model)
             feedback[task.entry] = res
+            self.task_groups.append(task)
 
         extractor_file = FileOps.join_path(
             os.path.dirname(self.task_index_url),
