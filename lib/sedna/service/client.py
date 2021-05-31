@@ -216,3 +216,48 @@ class ModelClient:
         return res
 
 
+class KBClient:
+    """Communicate with Knowledge Base server"""
+
+    def __init__(self, kbserver):
+        self.kbserver = f"{kbserver}/knowledgebase"
+
+    def upload_file(self, files, name=""):
+        if not (files and os.path.isfile(files)):
+            return files
+        if not name:
+            name = os.path.basename(files)
+        sednaLogger.info(f"Try to upload file {name}")
+        _url = f"{self.kbserver}/file/upload"
+        with open(files, "rb") as fin:
+            files = {"file": fin}
+            outurl = http_request(url=_url, method="POST", files=files)
+        return outurl
+
+    def update_db(self, task_info_file):
+
+        _url = f"{self.kbserver}/update"
+
+        try:
+            with open(task_info_file, "rb") as fin:
+                files = {"task": fin}
+                _id = http_request(url=_url, method="POST", files=files)
+        except Exception as err:
+            sednaLogger.error(f"Update kb error: {err}")
+            _id = None
+        return _id
+
+    def update_task_status(self, tasks, new_status=1):
+        data = {
+            "tasks": tasks,
+            "status": int(new_status)
+        }
+        _url = f"{self.kbserver}/update/status"
+        try:
+            return http_request(url=_url, method="POST", json=data)
+        except Exception as err:
+            sednaLogger.error(f"Update kb error: {err}")
+        return None
+
+    def query_db(self, sample):
+        pass

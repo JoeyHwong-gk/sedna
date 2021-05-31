@@ -11,8 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import os
+import re
+from sedna.service.server.knowledgeBase.model import init_db
+from sedna.service.server.knowledgeBase import KBServer
 
-from .aggregation import *
-from .hard_example_mining import *
-from .multi_task_learning import *
-from .unseen_task_detect import *
+
+def main():
+    init_db()
+    server = os.getenv("knowledgebaseServer", "http://127.0.0.1:9020")
+    match = re.compile("(https?)://([0-9]{1,3}(?:\.[0-9]{1,3}){3}):([0-9]+)").match(server)
+    if match:
+        _, host, port = match.groups()
+    else:
+        host, port = '127.0.0.1', 9020
+    KBServer(host=host, http_port=int(port)).start()
+
+
+if __name__ == '__main__':
+    main()
