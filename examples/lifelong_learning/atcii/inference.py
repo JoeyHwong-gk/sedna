@@ -60,8 +60,8 @@ def main():
         infer_data.parse(data, label=DATACONF["LABEL"])
         rsl, is_unseen, target_task = ll_job.inference(infer_data)
 
-        task_attr = target_task.samples.meta_attr
-        sample_attr = target_task.model.meta_attr
+        task_attr = "|".join([task.samples.meta_attr for task in target_task])
+        sample_attr = "|".join([task.model.meta_attr for task in target_task])
 
         rows.extend([list(rsl)[0], task_attr, sample_attr])
         if is_unseen:
