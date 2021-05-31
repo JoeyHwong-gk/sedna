@@ -68,7 +68,7 @@ class MulTaskLearning:
             "MODEL_URLS", '/tmp/index.pkl'
         )
         self.min_train_sample = int(Context.get_parameters(
-            "MIN_TRAIN_SAMPLE", '20'
+            "MIN_TRAIN_SAMPLE", '10'
         ))
 
     @staticmethod
@@ -136,8 +136,10 @@ class MulTaskLearning:
         feedback = {}
         for i, task in enumerate(task_groups):
             if not isinstance(task, TaskGroup):
+                self.models.append(None)
                 continue
             if not (task.samples and len(task.samples) > self.min_train_sample):
+                self.models.append(None)
                 n = len(task.samples)
                 sednaLogger.info(f"MTL Train Fail because of num  {n}  too least: {task.entry}")
                 continue

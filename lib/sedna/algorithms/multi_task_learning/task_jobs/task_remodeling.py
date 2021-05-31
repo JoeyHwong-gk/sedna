@@ -38,5 +38,6 @@ class DefaultTaskRemodeling:
             task_df.inx = _inx[0].tolist()
             task_df.meta_attr = samples.meta_attr.iloc[_inx].values
             data.append(task_df)
-            models.append(self.models[m])
+            model = self.models[m] or self.models[0]
+            models.append(model)
         return data, models
