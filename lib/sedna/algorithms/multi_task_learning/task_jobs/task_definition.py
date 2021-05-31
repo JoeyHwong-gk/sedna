@@ -28,7 +28,7 @@ class TaskDefinitionBySVC:
         n_class = kwargs.get("n_class", "")
         self.n_class = max(2, int(n_class)) if str(n_class).isdigit() else 2
 
-    def __call__(self, samples: BaseDataSource) -> Tuple[List[Task], Any]:
+    def __call__(self, samples: BaseDataSource) -> Tuple[List[Task], Any, BaseDataSource]:
         from sklearn.svm import SVC
         from sklearn.cluster import AgglomerativeClustering
 
@@ -53,7 +53,8 @@ class TaskDefinitionBySVC:
 
             task_obj = Task(entry=g_attr, samples=task_df)
             tasks.append(task_obj)
-        return tasks, c2
+        samples.x = df
+        return tasks, c2, samples
 
 
 @ClassFactory.register(ClassType.MTL)
@@ -61,7 +62,7 @@ class TaskDefinitionByDataAttr:
     def __init__(self, **kwargs):
         self.attr_filed = kwargs.get("attribute", [])
 
-    def __call__(self, samples: BaseDataSource) -> Tuple[List[Task], Any]:
+    def __call__(self, samples: BaseDataSource) -> Tuple[List[Task], Any, BaseDataSource]:
         tasks = []
         d_type = samples.data_type
         x_data = samples.x
@@ -93,4 +94,5 @@ class TaskDefinitionByDataAttr:
             task_obj = Task(entry=g_attr, samples=task_df, meta_attr=meta_attr)
             tasks.append(task_obj)
             _inx += 1
-        return tasks, task_index
+        samples.x = x_data.drop(self.attr_filed, axis=1)
+        return tasks, task_index, samples

@@ -125,7 +125,7 @@ class MulTaskLearning:
     def train(self, train_data: BaseDataSource,
               valid_data: BaseDataSource = None,
               post_process=None, **kwargs):
-        tasks, task_extractor = self.task_definition(train_data)
+        tasks, task_extractor, train_data = self.task_definition(train_data)
         self.extractor = task_extractor
         task_groups = self.task_relationship_discovery(tasks)
         self.models = []
