@@ -1,7 +1,9 @@
 FROM tensorflow/tensorflow:1.15.4
 
 RUN apt update \
+  && apt-get upgrade -y \
   && apt install -y libgl1-mesa-glx
+
 COPY ./lib/requirements.txt /home
 # install requirements of sedna lib
 RUN pip install -r /home/requirements.txt
