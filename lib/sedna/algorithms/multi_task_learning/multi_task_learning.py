@@ -134,16 +134,20 @@ class MulTaskLearning:
             callback = ClassFactory.get_cls(ClassType.CALLBACK, post_process)()
         self.task_groups = []
         feedback = {}
+        rare_task = []
         for i, task in enumerate(task_groups):
             if not isinstance(task, TaskGroup):
+                rare_task.append(i)
                 self.models.append(None)
                 continue
             if not (task.samples and len(task.samples) > self.min_train_sample):
                 self.models.append(None)
+                rare_task.append(i)
                 n = len(task.samples)
                 sednaLogger.info(f"MTL Train Fail because of num  {n}  too least: {task.entry}")
                 continue
             sednaLogger.info(f"MTL Train start {i} : {task.entry}")
+
             model_obj = set_backend(estimator=self.base_model)
             res = model_obj.train(train_data=task.samples, **kwargs)
             if callback:
@@ -156,7 +160,25 @@ class MulTaskLearning:
             self.models.append(model)
             feedback[task.entry] = res
             self.task_groups.append(task)
-
+        if len(rare_task):
+            model_obj = set_backend(estimator=self.base_model)
+            res = model_obj.train(train_data=train_data, **kwargs)
+            model_path = model_obj.save(model_name="global.pkl")
+            for i in rare_task:
+                task = task_groups[i]
+                entry = getattr(task, 'entry', "global")
+                if not isinstance(task, TaskGroup):
+                    task = TaskGroup(
+                        entry=entry, tasks=[]
+                    )
+                model = Model(index=i, entry=entry,
+                              model=model_path, result=res)
+                model.meta_attr = [t.meta_attr for t in task.tasks]
+                task.model = model
+                task.samples = train_data
+                self.models[i] = model
+                feedback[entry] = res
+                self.task_groups[i] = task
         extractor_file = FileOps.join_path(
             os.path.dirname(self.task_index_url),
             "kb_extractor.pkl"
