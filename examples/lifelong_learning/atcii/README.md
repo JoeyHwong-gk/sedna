@@ -16,7 +16,7 @@ In this example, you can download ASHRAE Global Thermal Comfort Database II to i
 
 
 
-download [datasets](https://kubeedge.obs.cn-north-1.myhuaweicloud.com/examples/atcii-classifier/dataset.tar.gz), including train、evaluation and test dataset.
+download [datasets](https://kubeedge.obs.cn-north-1.myhuaweicloud.com/examples/atcii-classifier/dataset.tar.gz), including train、evaluation and incremental dataset.
 ```
 cd /
 wget https://kubeedge.obs.cn-north-1.myhuaweicloud.com/examples/atcii-classifier/dataset.tar.gz
@@ -59,7 +59,9 @@ spec:
 EOF
 ```
 
-Start The Incremental Learning Job
+Also, you can trigger retraining by use `incremental Dataset`[trainData2.csv] to replace `trainData.csv` 
+
+Start The Lifelong Learning Job
 
 ```
 
@@ -124,7 +126,7 @@ spec:
           - name: "UT_SAVED_URL"
             value: "/ut_saved_url"
           - name: "infer_dataset_url"
-            value: "/data/infer_data.csv"
+            value: "/data/testData.csv"
           volumeMounts:
           - name: utdir
             mountPath: /ut_saved_url
