@@ -11,19 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import uuid
-import time
-from typing import List, Optional, Dict
+
 import uvicorn
-from pydantic import BaseModel
-from fastapi import FastAPI, WebSocket
-from fastapi.routing import APIRoute
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.requests import Request
-from starlette.responses import JSONResponse
-from starlette.routing import WebSocketRoute
-from starlette.endpoints import WebSocketEndpoint
-from starlette.types import ASGIApp, Receive, Scope, Send
+
 from sedna.common.log import sednaLogger
 from sedna.common.utils import get_host_ip
 
@@ -44,8 +35,8 @@ class BaseServer:  # pylint: disable=too-many-instance-attributes,too-many-argum
         self.certfile = ssl_cert
         self.ws_size = int(ws_size)
         self.timeout = int(timeout)
-        protoal = "https" if self.certfile else "http"
-        self.url = f"{protoal}://{self.host}:{self.http_port}"
+        protocal = "https" if self.certfile else "http"
+        self.url = f"{protocal}://{self.host}:{self.http_port}"
 
     def run(self, app, **kwargs):
         app.add_middleware(

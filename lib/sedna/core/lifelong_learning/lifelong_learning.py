@@ -104,7 +104,7 @@ class LifelongLearning(JobBase):
         for task in task_groups:
             try:
                 model = self.kb_server.upload_file(task.model.model)
-            except:
+            except Exception:
                 model_obj = set_backend(
                     estimator=self.estimator.estimator.base_model
                 )

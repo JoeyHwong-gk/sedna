@@ -21,13 +21,13 @@ from functools import wraps
 def get_host_ip():
     """Get local ip address."""
     ip = '127.0.0.1'
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
         ip = s.getsockname()[0]
-    except:
+    except Exception:
         pass
-    else:
+    finally:
         s.close()
 
     return ip

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Hard Example Mining Algorithms for Cloud Migration Judgment"""
+"""Hard Example Mining Algorithms"""
 import abc
 import math
 from sedna.common.class_factory import ClassFactory, ClassType

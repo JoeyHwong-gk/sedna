@@ -22,7 +22,7 @@ class ClassType:
 
     GENERAL = 'general'  # 通用
     HEM = 'hard_example_mining'  # 难例算法
-    FLAGG = 'aggregation'  # 联邦学习聚合算法
+    FL_AGG = 'aggregation'  # 联邦学习聚合算法
     MTL = 'multi_task_learening'  # 多任务学习算法
     UTD = 'unseen_task_detect'  # 未知任务识别算法
 

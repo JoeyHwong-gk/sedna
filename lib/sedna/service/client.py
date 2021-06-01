@@ -55,7 +55,7 @@ class LCReporter(threading.Thread):
         # the LC. If the period_increment is 0 in the current period,
         # the system does not send the messages to the LC.
         self.period_increment = 0
-        self.message = deepcopy(message)
+        self.message = message
         self.lock = threading.Lock()
 
     def update_for_edge_inference(self):
@@ -143,22 +143,22 @@ class AggregationClient:
             sednaLogger.info(f"{self.uri} connection was refused by server")
             raise
         except ConnectionClosedError:
-            sednaLogger.info(f"{self.uri}  connection lost")
+            sednaLogger.info(f"{self.uri} connection lost")
             raise
         except ConnectionClosedOK:
-            sednaLogger.info(f"{self.uri}  connection closed")
+            sednaLogger.info(f"{self.uri } connection closed")
             raise
         except InvalidStatusCode as err:
-            sednaLogger.info(f"{self.uri}  Websocket failed - with invalid status code {err.status_code}")
+            sednaLogger.info(f"{self.uri } websocket failed - with invalid status code {err.status_code}")
             raise
         except WebSocketException as err:
-            sednaLogger.info(f"{self.uri}  Websocket failed - with {err}")
+            sednaLogger.info(f"{self.uri } websocket failed - with {err}")
             raise
         except OSError as err:
-            sednaLogger.info(f"{self.uri} Connection failed - with {err}")
+            sednaLogger.info(f"{self.uri} connection failed - with {err}")
             raise
         except Exception:
-            sednaLogger.exception(f"{self.uri} Websocket Error")
+            sednaLogger.exception(f"{self.uri} websocket Error")
             raise
 
     async def _send(self, data):
@@ -197,23 +197,14 @@ class ModelClient:
         self.endpoint = f"{protocol}://{host}:{port}/{service_name}"
 
     def check_server_status(self):
-        try:
-            http_request(url=self.endpoint, method="GET", json={})
-        except:
-            return False
-        else:
-            return True
+        return http_request(url=self.endpoint, method="GET")
 
     def inference(self, x, **kwargs):
         """Use the remote big model server to inference."""
         json_data = deepcopy(kwargs)
         json_data.update({"data": x})
-        _url = "{}/{}".format(self.endpoint, "predict")
-        try:
-            res = http_request(url=_url, method="POST", json=json_data)
-        except:
-            return None
-        return res
+        _url = f"{self.endpoint}/predict"
+        return http_request(url=_url, method="POST", json=json_data)
 
 
 class KBClient:
@@ -261,6 +252,7 @@ class KBClient:
         _url = f"{self.kbserver}/update/status"
         try:
             outurl = http_request(url=_url, method="POST", json=data)
+            outurl = outurl.lstrip("/")
             return f"{self.kbserver}/{outurl}"
         except Exception as err:
             sednaLogger.error(f"Update kb error: {err}")

@@ -30,10 +30,12 @@ class BaseAggregation(metaclass=abc.ABCMeta):
     def aggregate(self, weights, size=0):
         """
         Aggregation
+        :param weights: deep learning weight
+        :param size: numbers of sample in each loop
         """
 
 
-@ClassFactory.register(ClassType.FLAGG)
+@ClassFactory.register(ClassType.FL_AGG)
 class FedAvg(BaseAggregation, abc.ABC):
     """Federated averaging algorithm"""
 
@@ -45,5 +47,6 @@ class FedAvg(BaseAggregation, abc.ABC):
         for inx, weight in enumerate(weights):
             old_weight = self.weights[inx]
             row_weight = (np.array(weight) - old_weight) * (size / total_sample) + old_weight
+            updates.append(row_weight)
         self.weights = deepcopy(updates)
         return updates

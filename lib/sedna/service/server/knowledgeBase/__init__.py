@@ -114,7 +114,7 @@ class KBServer(BaseServer):
             fout.write(files)
         return f"/file/download?files={filename}&name={filename}"
 
-    async def update_status(self, data: KBUpdateResult = Body(...)):
+    def update_status(self, data: KBUpdateResult = Body(...)):
         deploy = True if data.status else False
         tasks = data.tasks.split(",") if data.tasks else []
         with Session(bind=engine) as session:
@@ -142,8 +142,8 @@ class KBServer(BaseServer):
 
         return f"/file/download?files=kb_index_{self.latest}.pkl&name=index.pkl"
 
-    async def update(self, task: UploadFile = File(...)):
-        tasks = await task.read()
+    def update(self, task: UploadFile = File(...)):
+        tasks = task.file.read()
         fd, name = tempfile.mkstemp()
         with open(name, "wb") as fout:
             fout.write(tasks)

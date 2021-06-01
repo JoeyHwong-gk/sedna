@@ -11,9 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import uuid
 import time
 from typing import List, Optional, Dict
+
+import uuid
+
 from pydantic import BaseModel
 from fastapi import FastAPI, WebSocket
 from fastapi.routing import APIRoute
@@ -22,11 +24,11 @@ from starlette.responses import JSONResponse
 from starlette.routing import WebSocketRoute
 from starlette.endpoints import WebSocketEndpoint
 from starlette.types import ASGIApp, Receive, Scope, Send
+
 from sedna.common.log import sednaLogger
 from sedna.common.utils import get_host_ip
 
 from .base import BaseServer
-
 
 __all__ = ('AggregationServer',)
 

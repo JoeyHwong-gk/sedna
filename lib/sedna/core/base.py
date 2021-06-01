@@ -154,5 +154,3 @@ class JobBase(DistributedWorker):
             LCClient.send(self.config.lc_server, self.worker_name, message)
         except Exception as err:
             self.log.error(err)
-            with open(FileOps.join_path(self.config.model_url, "lc_msg.json"), 'w') as f_out:
-                json.dump(message, f_out)
