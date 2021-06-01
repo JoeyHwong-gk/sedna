@@ -42,10 +42,9 @@ def main():
 
     unseen_sample = open(os.path.join(ut_saved_url, "unseen_sample.csv"),
                          "w", encoding="utf-8")
-    unseen_sample.write("\t".join(header + ['pred', 'TaskAttr', 'SampleAttr']) + "\n")
+    unseen_sample.write("\t".join(header + ['pred']) + "\n")
     output_sample = open(f"{infer_dataset_url}_out.csv", "w", encoding="utf-8")
-    unseen_sample.write("\t".join(header + ['pred', 'TaskAttr', 'SampleAttr']) + "\n")
-    output_sample.write("\t".join(header + ['pred', 'TaskAttr', 'SampleAttr']) + "\n")
+    output_sample.write("\t".join(header + ['pred']) + "\n")
 
     while 1:
         where = file_handle.tell()
@@ -60,10 +59,7 @@ def main():
         infer_data.parse(data, label=DATACONF["LABEL"])
         rsl, is_unseen, target_task = ll_job.inference(infer_data)
 
-        task_attr = "|".join([task.samples.meta_attr for task in target_task])
-        sample_attr = "|".join([task.model.meta_attr for task in target_task])
-
-        rows.extend([list(rsl)[0], task_attr, sample_attr])
+        rows.append(list(rsl)[0])
         if is_unseen:
             unseen_sample.write("\t".join(map(str, rows)) + "\n")
         output_sample.write("\t".join(map(str, rows)) + "\n")

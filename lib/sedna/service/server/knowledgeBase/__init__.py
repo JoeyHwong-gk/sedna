@@ -112,7 +112,7 @@ class KBServer(BaseServer):
         output = FileOps.join_path(self.save_dir, filename)
         with open(output, "wb") as fout:
             fout.write(files)
-        return f"{self.url}/file/download?files={filename}&name={filename}"
+        return f"/file/download?files={filename}&name={filename}"
 
     async def update_status(self, tasks: List[str], status: int):
         deploy = True if status else False
@@ -139,7 +139,7 @@ class KBServer(BaseServer):
                                         f"kb_index_{self.latest}.pkl")
         joblib.dump(task_info, _index_path)
 
-        return f"{self.url}/file/download?files=kb_index_{self.latest}.pkl&name=index.pkl"
+        return f"/file/download?files=kb_index_{self.latest}.pkl&name=index.pkl"
 
     async def update(self, task: UploadFile = File(...)):
         tasks = await task.read()
@@ -216,7 +216,7 @@ class KBServer(BaseServer):
                                         f"kb_index_{self.latest}.pkl")
         FileOps.upload(name, _index_path)
 
-        return f"{self.url}/file/download?files=kb_index_{self.latest}.pkl&name=index.pkl"
+        return f"/file/download?files=kb_index_{self.latest}.pkl&name=index.pkl"
 
 
 if __name__ == '__main__':

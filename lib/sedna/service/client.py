@@ -232,7 +232,7 @@ class KBClient:
         with open(files, "rb") as fin:
             files = {"file": fin}
             outurl = http_request(url=_url, method="POST", files=files)
-        return outurl
+        return f"{self.kbserver}/{outurl}"
 
     def update_db(self, task_info_file):
 
@@ -241,7 +241,8 @@ class KBClient:
         try:
             with open(task_info_file, "rb") as fin:
                 files = {"task": fin}
-                _id = http_request(url=_url, method="POST", files=files)
+                outurl = http_request(url=_url, method="POST", files=files)
+                _id = f"{self.kbserver}/{outurl}"
         except Exception as err:
             sednaLogger.error(f"Update kb error: {err}")
             _id = None
@@ -254,7 +255,8 @@ class KBClient:
         }
         _url = f"{self.kbserver}/update/status"
         try:
-            return http_request(url=_url, method="POST", json=data)
+            outurl = http_request(url=_url, method="POST", json=data)
+            return f"{self.kbserver}/{outurl}"
         except Exception as err:
             sednaLogger.error(f"Update kb error: {err}")
         return None

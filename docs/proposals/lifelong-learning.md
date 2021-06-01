@@ -53,8 +53,6 @@ Each stage contains these below states:
 1. Failed: the corresponding stage failed
 1. Completed: the corresponding stage completed
 
-![](./images/lifelong-learning-state-machine.png)
-
 ### CRD API Group and Version
 The `LifelongLearningJob` CRD will be namespace-scoped.
 The tables below summarize the group, kind and API version details for the CRD.
