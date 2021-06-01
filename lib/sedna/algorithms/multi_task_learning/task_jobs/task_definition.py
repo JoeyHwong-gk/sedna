@@ -94,5 +94,8 @@ class TaskDefinitionByDataAttr:
             task_obj = Task(entry=g_attr, samples=task_df, meta_attr=meta_attr)
             tasks.append(task_obj)
             _inx += 1
-        samples.x = x_data.drop(self.attr_filed, axis=1)
+        x_data.drop(self.attr_filed, axis=1, inplace=True)
+        samples = BaseDataSource(data_type=d_type)
+        samples.x = x_data
+        samples.y = y_data
         return tasks, task_index, samples
