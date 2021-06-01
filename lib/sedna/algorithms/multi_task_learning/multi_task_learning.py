@@ -15,7 +15,6 @@ import os
 import json
 import joblib
 
-from sklearn import metrics as sk_metrics
 from .task_jobs.artifact import Model, Task, TaskGroup
 from sedna.datasources import BaseDataSource
 from sedna.backend import set_backend
@@ -240,6 +239,8 @@ class MulTaskLearning:
                  metrics=None,
                  metrics_param=None,
                  **kwargs):
+        from sklearn import metrics as sk_metrics
+
         result, tasks = self.predict(data, kwargs=kwargs)
         m_dict = {}
         if metrics:

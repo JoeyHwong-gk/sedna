@@ -253,7 +253,7 @@ class KBClient:
             _id = None
         return _id
 
-    def update_task_status(self, tasks, new_status=1):
+    def update_task_status(self, tasks: str, new_status=1):
         data = {
             "tasks": tasks,
             "status": int(new_status)

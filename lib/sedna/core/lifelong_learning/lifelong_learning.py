@@ -162,8 +162,8 @@ class LifelongLearning(JobBase):
                 self.log.warn(f"{entry} will not be deploy because scores lt {model_threshold}")
                 drop_tasks.append(entry)
                 continue
-
-        index_file = self.kb_server.update_task_status(drop_tasks, new_status=0)
+        drop_task = ",".join(drop_tasks)
+        index_file = self.kb_server.update_task_status(drop_task, new_status=0)
         if not index_file:
             self.log.error(f"KB update Fail !")
             index_file = str(index_url)

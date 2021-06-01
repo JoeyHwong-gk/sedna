@@ -17,7 +17,7 @@ import joblib
 import tempfile
 from typing import List, Optional
 from pydantic import BaseModel
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Body
 from fastapi.routing import APIRoute
 from fastapi.responses import FileResponse
 from starlette.responses import JSONResponse
@@ -31,8 +31,8 @@ class KBUpdateResult(BaseModel):  # pylint: disable=too-few-public-methods
     """
     result
     """
-    code: int
-    result: Optional[str] = None
+    status: int
+    tasks: Optional[str] = None
 
 
 class TaskItem(BaseModel):  # pylint: disable=too-few-public-methods
@@ -114,8 +114,9 @@ class KBServer(BaseServer):
             fout.write(files)
         return f"/file/download?files={filename}&name={filename}"
 
-    async def update_status(self, tasks: List[str], status: int):
-        deploy = True if status else False
+    async def update_status(self, data: KBUpdateResult = Body(...)):
+        deploy = True if data.status else False
+        tasks = data.tasks.split(",") if data.tasks else []
         with Session(bind=engine) as session:
             session.query(TaskGrp).filter(
                 TaskGrp.name.in_(tasks)
