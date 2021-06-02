@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import json
 from copy import deepcopy
 from sedna.common.log import sednaLogger
 from sedna.common.file_ops import FileOps
@@ -32,8 +33,15 @@ class IncrementalLearning(JobBase):
         FileOps.clean_folder([self.config.model_url], clean=False)
         hem = self.get_parameters("HEM_NAME")
         hem_parameters = self.get_parameters("HEM_PARAMETERS")
+
+        try:
+            hem_parameters = json.loads(hem_parameters)
+        except Exception:
+            hem_parameters = None
+
         if hem is None:
             hem = self.config.get("hem_name") or "IBT"
+
         if hem_parameters is None:
             hem_parameters = {}
         self.hard_example_mining_algorithm = ClassFactory.get_cls(ClassType.HEM,

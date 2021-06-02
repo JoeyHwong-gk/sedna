@@ -26,7 +26,7 @@ def _load_txt_dataset(dataset_url):
     # use original dataset url,
     # see https://github.com/kubeedge/sedna/issues/35
     original_dataset_url = Context.get_parameters('original_dataset_url')
-    return original_dataset_url + os.path.sep + dataset_url
+    return os.path.dirname(original_dataset_url) + os.path.sep + dataset_url
 
 
 def main():

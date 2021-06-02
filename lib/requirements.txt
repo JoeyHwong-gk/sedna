@@ -1,6 +1,6 @@
 numpy>=1.13.3
 colorlog~=4.7.2
-websockets==8.1
+websockets~=9.1
 requests==2.24.0
 PyYAML~=5.4.1
 setuptools~=54.2.0

@@ -36,7 +36,7 @@ class TFBackend(BackendBase):
 
     @staticmethod
     def _init_cpu_session_config():
-        sess_config = tf.ConfigProto()
+        sess_config = tf.ConfigProto(allow_soft_placement=True)
         return sess_config
 
     @staticmethod

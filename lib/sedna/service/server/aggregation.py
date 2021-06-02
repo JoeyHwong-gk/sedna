@@ -129,17 +129,19 @@ class Aggregator(WSServerBase):
 
     async def send_message(self, client_id: str, msg: Dict):
         self._client_meta[client_id].job_count += 1
-        for to_client, websocket in self._clients.items():
-            if to_client == client_id:
-                continue
+        clients = list(self._clients.items())
+        for to_client, websocket in clients:
+
             if msg.get("type", "") == "update_weight":
-                self.current_round[client_id] = self.current_round.get(client_id, 0) + 1
-                exit_flag = "ok" if self.exit_check(client_id) else "continue"
+                if to_client == client_id:
+                    continue
+                self.current_round[to_client] = self.current_round.get(to_client, 0) + 1
+                exit_flag = "ok" if self.exit_check(to_client) else "continue"
                 msg["exit_flag"] = exit_flag
             try:
                 await websocket.send_json(msg)
-            except Exception:
-                pass
+            except Exception as err:
+                sednaLogger.error(err)
 
     def exit_check(self, client_id):
         current_round = self.current_round.get(client_id, 0)
