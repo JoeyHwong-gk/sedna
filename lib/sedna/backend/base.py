@@ -27,10 +27,13 @@ class BackendBase:
         self.use_cuda = True if kwargs.get("use_cuda") else False
         self.fine_tune = fine_tune
         self.model_save_path = kwargs.get("model_save_path") or "/tmp"
+        self.default_name = kwargs.get("model_name")
         self.has_load = False
 
     @property
     def model_name(self):
+        if self.default_name:
+            return self.default_name
         model_postfix = {"pytorch": ".pth", "keras": ".h5", "tensorflow": ".pb"}
         continue_flag = "_finetune_" if self.fine_tune else ""
         post_fix = model_postfix.get(self.framework, ".pkl")
