@@ -29,7 +29,8 @@ def run_server():
         servername=aggregation_algorithm,
         host=agg_ip,
         http_port=agg_port,
-        exit_round=exit_round
+        exit_round=exit_round,
+        ws_size=20 * 1024 * 1024
     )
     server.start()
 

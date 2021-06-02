@@ -37,7 +37,7 @@ class FederatedLearning(JobBase):
             agg_uri=agg_uri
         )
         super(FederatedLearning, self).__init__(estimator=estimator, config=config)
-        self.aggregation = ClassFactory.get_cls(ClassType.FLAGG, aggregation)
+        self.aggregation = ClassFactory.get_cls(ClassType.FL_AGG, aggregation)
         self.node = None
 
     def register(self):

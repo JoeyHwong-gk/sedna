@@ -19,7 +19,6 @@ from sedna.backend.base import BackendBase
 from sedna.common.file_ops import FileOps
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-tf.logging.set_verbosity(tf.logging.ERROR)
 
 
 class TFBackend(BackendBase):

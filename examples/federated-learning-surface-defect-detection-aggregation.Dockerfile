@@ -6,8 +6,8 @@ RUN apt update \
   && apt-get install -y git
 
 COPY ./lib/requirements.txt /home
+
 RUN pip install -r /home/requirements.txt
-RUN pip install git+https://github.com/joeyhwong-gk/uvicorn
 
 ENV PYTHONPATH "/home/lib"
 

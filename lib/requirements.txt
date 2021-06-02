@@ -13,5 +13,4 @@ pandas~=1.1.5
 six~=1.15.0
 opencv-python==4.4.0.44
 Pillow==8.0.1
-uvicorn~=0.13.4
-
+uvicorn~=0.14.0

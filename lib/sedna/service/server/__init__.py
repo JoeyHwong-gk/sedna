@@ -13,4 +13,3 @@
 # limitations under the License.
 from .inference import *
 from .aggregation import *
-from .knowledgeBase import *

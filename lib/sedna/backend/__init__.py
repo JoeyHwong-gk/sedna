@@ -27,11 +27,6 @@ def set_backend(estimator=None, config=None):
     if 'CUDA_VISIBLE_DEVICES' in os.environ:
         os.environ['DEVICE_CATEGORY'] = 'GPU'
         use_cuda = True
-    elif 'NPU-VISIBLE-DEVICES' in os.environ:
-        os.environ['DEVICE_CATEGORY'] = 'NPU'
-        os.environ['ORIGIN_RANK_TABLE_FILE'] = os.environ['RANK_TABLE_FILE']
-        os.environ['ORIGIN_RANK_SIZE'] = os.environ['RANK_SIZE']
-
     if config.get("device_category"):
         os.environ['DEVICE_CATEGORY'] = config.get("device_category")
     if config.is_tf_backend():
