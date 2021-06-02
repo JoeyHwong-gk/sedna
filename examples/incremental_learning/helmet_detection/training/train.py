@@ -16,7 +16,7 @@ import os
 import tensorflow as tf
 
 from interface import Estimator
-from sedna.common.config import Context
+from sedna.common.config import Context, BaseConfig
 from sedna.datasources import TxtDataParse
 from sedna.core.incremental_learning import IncrementalLearning
 
@@ -35,7 +35,7 @@ def main():
     class_names = Context.get_parameters("class_names")
 
     # load dataset.
-    train_dataset_url = Context.get_parameters('train_dataset_url')
+    train_dataset_url = BaseConfig.train_dataset_url
     train_data = TxtDataParse(data_type="train", func=_load_txt_dataset)
     train_data.parse(train_dataset_url, use_raw=True)
 
@@ -46,7 +46,7 @@ def main():
     epochs = Context.get_parameters('epochs')
     batch_size = Context.get_parameters('batch_size')
 
-    tf.flags.DEFINE_string('train_url', default=Context.get_parameters("model_url"),
+    tf.flags.DEFINE_string('train_url', default=BaseConfig.model_url,
                            help='train url for model')
     tf.flags.DEFINE_string('log_url', default=None, help='log url for model')
     tf.flags.DEFINE_string('checkpoint_url', default=None,

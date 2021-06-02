@@ -183,7 +183,7 @@ class AggregationClient:
         })
         data_json = loop.run_until_complete(self._send(j))
         if data_json is None:
-            sednaLogger.error("send data to agg worker failed, exist worker")
+            sednaLogger.error(f"send {msg_type} to agg worker failed")
             return
         res = json.loads(data_json)
         return res

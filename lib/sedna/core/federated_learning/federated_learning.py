@@ -41,13 +41,14 @@ class FederatedLearning(JobBase):
         self.node = None
 
     def register(self):
+        self.log.info(f"Node {self.worker_name} connect to : {self.config.agg_uri}")
         self.node = AggregationClient(url=self.config.agg_uri, client_id=self.worker_name)
         loop = asyncio.get_event_loop()
-        res = loop.run_until_complete(self.node.connect())
-        self.log.info(f"Federated learning Experiment node register: {res}")
+        res = loop.run_until_complete(asyncio.wait_for(self.node.connect(), timeout=300))
+
         FileOps.clean_folder([self.config.model_url], clean=False)
         self.aggregation = self.aggregation()
-        self.log.info("Federated learning Experiment model prepared")
+        self.log.info(f"Federated learning Experiment model prepared -- {res}")
         if callable(self.estimator):
             self.estimator = self.estimator()
 

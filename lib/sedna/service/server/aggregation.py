@@ -136,7 +136,10 @@ class Aggregator(WSServerBase):
                 self.current_round[client_id] = self.current_round.get(client_id, 0) + 1
                 exit_flag = "ok" if self.exit_check(client_id) else "continue"
                 msg["exit_flag"] = exit_flag
-            await websocket.send_json(msg)
+            try:
+                await websocket.send_json(msg)
+            except Exception:
+                pass
 
     def exit_check(self, client_id):
         current_round = self.current_round.get(client_id, 0)
