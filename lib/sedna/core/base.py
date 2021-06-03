@@ -100,46 +100,7 @@ class JobBase(DistributedWorker):
     def get_parameters(self, param, default=None):
         return self.parameters.get_parameters(param=param, default=default)
 
-    def _report_task_info(self, task_info, status, metrics, kind="train", model=None):
-        if model:
-            _, _type = os.path.splitext(model)
-            _url = FileOps.remove_path_prefix(model,
-                                              self.config.data_path_prefix)
-            results = [{
-                "format": _type.lstrip("."),
-                "url": _url,
-                "metrics": metrics
-            }]
-            if _type == ".pb":
-                _url = FileOps.remove_path_prefix(os.path.dirname(model),
-                                                  self.config.data_path_prefix)
-                results.append(
-                    {
-                        "format": "ckpt",
-                        "url": _url,
-                        "metrics": metrics
-                    }
-                )
-        else:
-            ckpt_model_url = FileOps.remove_path_prefix(self.config.model_url,
-                                                        self.config.data_path_prefix)
-            pb_model_url = FileOps.remove_path_prefix(self.model_path,
-                                                      self.config.data_path_prefix)
-
-            ckpt_result = {
-                "format": "ckpt",
-                "url": ckpt_model_url,
-                "metrics": metrics
-            }
-
-            pb_result = {
-                "format": "pb",
-                "url": pb_model_url,
-                "metrics": metrics
-            }
-
-            results = [ckpt_result, pb_result]
-
+    def report_task_info(self, task_info, status, results, kind="train"):
         message = {
             "name": self.worker_name,
             "namespace": self.config.namespace,
@@ -151,7 +112,6 @@ class JobBase(DistributedWorker):
         }
         if task_info:
             message["ownerInfo"] = task_info
-
         try:
             LCClient.send(self.config.lc_server, self.worker_name, message)
         except Exception as err:

@@ -85,6 +85,27 @@ class TFBackend(BackendBase):
     def set_weights(self, weights):
         """todo: no support yet"""
 
+    def model_info(self, model, relpath=None, result=None):
+        ckpt = os.path.dirname(model)
+        if relpath:
+            _url = FileOps.remove_path_prefix(model, relpath)
+            ckpt_url = FileOps.remove_path_prefix(ckpt, relpath)
+        else:
+            _url = model
+            ckpt_url = ckpt
+        results = [
+            {
+                "format": "pb",
+                "url": _url,
+                "metrics": result
+            }, {
+                "format": "ckpt",
+                "url": ckpt_url,
+                "metrics": result
+            }
+        ]
+        return results
+
 
 class KerasBackend(TFBackend):
     def __init__(self, estimator, fine_tune=True, **kwargs):

@@ -11,11 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import os
 
 from copy import deepcopy
 from sedna.common.utils import get_host_ip
-from sedna.common.log import sednaLogger
 from sedna.common.class_factory import ClassFactory, ClassType
 from sedna.service.server import InferenceServer
 from sedna.service.client import ModelClient, LCReporter
@@ -63,7 +63,7 @@ class TSBigModelService(JobBase):
         self.log.info("Joint inference Experiment Train Start")
         _ = self.estimator.train(train_data=train_data, valid_data=valid_data, **kwargs)
         self.estimator.save(self.model_path)
-        sednaLogger.info("Joint inference Experiment Train Finished")
+        self.log.info("Joint inference Experiment Train Finished")
         return callback_func(self.estimator) if callback_func else self.estimator
 
     def inference(self, data=None, post_process=None, **kwargs):
@@ -130,7 +130,7 @@ class JointInference(JobBase):
         self.log.info("Joint inference Experiment Train Start")
         _ = self.estimator.train(train_data=train_data, valid_data=valid_data, **kwargs)
         self.estimator.save(self.model_path)
-        sednaLogger.info("Joint inference Experiment Train Finished")
+        self.log.info("Joint inference Experiment Train Finished")
         return callback_func(self.estimator) if callback_func else self.estimator
 
     def inference(self, data=None, post_process=None, **kwargs):
@@ -140,9 +140,9 @@ class JointInference(JobBase):
         elif post_process is not None:
             callback_func = ClassFactory.get_cls(ClassType.CALLBACK, post_process)
 
-        sednaLogger.info("Joint Inference Experiment edge Inference Start")
+        self.log.info("Joint Inference Experiment edge Inference Start")
         res = self.estimator.predict(data, **kwargs)
-        sednaLogger.info("Joint Inference Experiment edge Inference Done")
+        self.log.info("Joint Inference Experiment edge Inference Done")
         edge_result = deepcopy(res)
 
         if callback_func:
@@ -162,7 +162,7 @@ class JointInference(JobBase):
         try:
             hard_example_mining_algorithm = ClassFactory.get_cls(ClassType.HEM, hem)()
         except ValueError as err:
-            sednaLogger.error("Joint Inference Experiment Inference [HEM] : {}".format(err))
+            self.log.error("Joint Inference Experiment Inference [HEM] : {}".format(err))
         else:
             is_hard_example = hard_example_mining_algorithm(res, **hem_parameters)
             if is_hard_example:

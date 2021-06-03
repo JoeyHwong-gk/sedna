@@ -251,7 +251,8 @@ class BaseConfig(ConfigSerializable):
     # the name of FederatedLearningJob and others Job
     job_name = os.getenv("JOB_NAME", "sedna")
 
-    model_url = os.getenv("MODEL_URL", "")
+    model_url = os.getenv("MODEL_URL")
+    model_name = os.getenv("MODEL_NAME")
 
     # user parameter
     parameters = os.getenv("PARAMETERS")

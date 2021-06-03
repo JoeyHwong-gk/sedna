@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import os
 import joblib
 import tempfile
@@ -127,8 +128,9 @@ class LifelongLearning(JobBase):
         if os.path.isfile(name):
             os.close(fd)
             os.remove(name)
-        self._report_task_info(None, K8sResourceKindStatus.COMPLETED.value,
-                               res, model=self.config.task_index)
+        task_info_res = self.estimator.model_info(self.config.task_index, result=res,
+                                                  relpath=self.config.data_path_prefix)
+        self.report_task_info(None, K8sResourceKindStatus.COMPLETED.value, task_info_res)
         self.log.info(f"Lifelong learning Experiment Finished, "
                       f"KB idnex save in {self.config.task_index}")
         return callback_func(self.estimator, res) if callback_func else res
@@ -169,8 +171,9 @@ class LifelongLearning(JobBase):
             index_file = str(index_url)
         self.log.info(f"upload kb index from {index_file} to {self.config.task_index}")
         FileOps.download(index_file, self.config.task_index)
-        self._report_task_info(None, K8sResourceKindStatus.COMPLETED.value,
-                               res, kind="eval", model=self.config.task_index)
+        task_info_res = self.estimator.model_info(self.config.task_index, result=res,
+                                                  relpath=self.config.data_path_prefix)
+        self.report_task_info(None, K8sResourceKindStatus.COMPLETED.value, task_info_res, kind="eval")
         return callback_func(res) if callback_func else res
 
     def inference(self, data=None, post_process=None, **kwargs):
@@ -197,5 +200,4 @@ class LifelongLearning(JobBase):
                 is_unseen_task = unseen_task_detect_algorithm(
                     tasks=tasks, result=res, **self.unseen_task_detect_param
                 )
-        # self._report_task_info(None, K8sResourceKindStatus.COMPLETED.value, res, kind="inference")
         return res, is_unseen_task, tasks

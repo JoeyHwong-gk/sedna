@@ -72,7 +72,7 @@ class Estimator:
         """
         initialize logging configuration
         """
-        sess_config = tf.ConfigProto()
+        sess_config = tf.ConfigProto(allow_soft_placement=True)
         self.graph = tf.Graph()
         self.session = tf.compat.v1.Session(config=sess_config, graph=self.graph)
 

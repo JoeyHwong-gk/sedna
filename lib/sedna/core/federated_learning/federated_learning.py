@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import time
 import asyncio
 from sedna.core.base import JobBase
@@ -18,6 +19,7 @@ from sedna.common.config import Context
 from sedna.common.file_ops import FileOps
 from sedna.common.class_factory import ClassFactory, ClassType
 from sedna.service.client import AggregationClient
+from sedna.common.constant import K8sResourceKindStatus
 
 
 class FederatedLearning(JobBase):
@@ -91,10 +93,12 @@ class FederatedLearning(JobBase):
                 'startTime': start,
                 'updateTime': time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
             }
-            self.estimator.save()
+            model_paths = self.estimator.save()
+            task_info_res = self.estimator.model_info(model_paths, result=res,
+                                                      relpath=self.config.data_path_prefix)
             if exit_flag:
-                self._report_task_info(task_info, 'completed', res)
+                self.report_task_info(task_info, K8sResourceKindStatus.COMPLETED.value, task_info_res)
                 self.log.info(f"exit training from [{self.worker_name}]")
                 return callback_func(self.estimator) if callback_func else self.estimator
             else:
-                self._report_task_info(task_info, 'training', res)
+                self.report_task_info(task_info, K8sResourceKindStatus.RUNNING.value, task_info_res)
