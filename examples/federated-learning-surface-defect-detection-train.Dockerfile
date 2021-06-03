@@ -1,11 +1,12 @@
-FROM tensorflow/tensorflow:1.15.4
+FROM tensorflow/tensorflow:2.3.0
 
 RUN apt update \
-  && apt-get upgrade -y \
   && apt install -y libgl1-mesa-glx
 
 COPY ./lib/requirements.txt /home
 RUN pip install -r /home/requirements.txt
+RUN pip install keras~=2.4.3
+RUN pip install scikit-learn~=0.24.1
 
 ENV PYTHONPATH "/home/lib"
 

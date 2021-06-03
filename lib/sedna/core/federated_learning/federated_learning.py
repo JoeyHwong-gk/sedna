@@ -37,17 +37,18 @@ class FederatedLearning(JobBase):
             agg_uri=agg_uri
         )
         super(FederatedLearning, self).__init__(estimator=estimator, config=config)
-        self.aggregation = ClassFactory.get_cls(ClassType.FLAGG, aggregation)
+        self.aggregation = ClassFactory.get_cls(ClassType.FL_AGG, aggregation)
         self.node = None
 
     def register(self):
+        self.log.info(f"Node {self.worker_name} connect to : {self.config.agg_uri}")
         self.node = AggregationClient(url=self.config.agg_uri, client_id=self.worker_name)
         loop = asyncio.get_event_loop()
-        res = loop.run_until_complete(self.node.connect())
-        self.log.info(f"Federated learning Experiment node register: {res}")
+        res = loop.run_until_complete(asyncio.wait_for(self.node.connect(), timeout=300))
+
         FileOps.clean_folder([self.config.model_url], clean=False)
         self.aggregation = self.aggregation()
-        self.log.info("Federated learning Experiment model prepared")
+        self.log.info(f"Federated learning Experiment model prepared -- {res}")
         if callable(self.estimator):
             self.estimator = self.estimator()
 
@@ -81,20 +82,19 @@ class FederatedLearning(JobBase):
                 rec_sample = recv["num_samples"]
 
                 self.log.info(f"Federated learning get weight from [{rec_client}] : {rec_sample}")
-                n_weight = self.aggregation.aggregation(recv["weights"], rec_sample)
+                n_weight = self.aggregation.aggregate(recv["weights"], rec_sample)
                 self.estimator.set_weights(n_weight)
-                exit_flag = recv.get("exit_flag", "") == "ok"
+                exit_flag = received.get("exit_flag", "") == "ok"
             task_info = {
                 'currentRound': round_number,
                 'sampleCount': self.aggregation.total_size,
                 'startTime': start,
                 'updateTime': time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
             }
+            self.estimator.save()
             if exit_flag:
                 self._report_task_info(task_info, 'completed', res)
                 self.log.info(f"exit training from [{self.worker_name}]")
-                self.estimator.save()
-
                 return callback_func(self.estimator) if callback_func else self.estimator
             else:
                 self._report_task_info(task_info, 'training', res)

@@ -300,5 +300,5 @@ class Context:
     def get_parameters(cls, param, default=None):
         """get the value of the key `param` in `PARAMETERS`,
         if not exist, the default value is returned"""
-        value = cls.parameters.get(param)
+        value = cls.parameters.get(param) or cls.parameters.get(str(param).upper())
         return value if value else default

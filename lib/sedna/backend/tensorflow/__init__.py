@@ -19,7 +19,6 @@ from sedna.backend.base import BackendBase
 from sedna.common.file_ops import FileOps
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-tf.logging.set_verbosity(tf.logging.ERROR)
 
 
 class TFBackend(BackendBase):
@@ -37,7 +36,7 @@ class TFBackend(BackendBase):
 
     @staticmethod
     def _init_cpu_session_config():
-        sess_config = tf.ConfigProto()
+        sess_config = tf.ConfigProto(allow_soft_placement=True)
         return sess_config
 
     @staticmethod

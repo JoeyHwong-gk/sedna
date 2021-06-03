@@ -129,14 +129,19 @@ class Aggregator(WSServerBase):
 
     async def send_message(self, client_id: str, msg: Dict):
         self._client_meta[client_id].job_count += 1
-        for to_client, websocket in self._clients.items():
-            if to_client == client_id:
-                continue
+        clients = list(self._clients.items())
+        for to_client, websocket in clients:
+
             if msg.get("type", "") == "update_weight":
-                self.current_round[client_id] = self.current_round.get(client_id, 0) + 1
-                exit_flag = "ok" if self.exit_check(client_id) else "continue"
+                if to_client == client_id:
+                    continue
+                self.current_round[to_client] = self.current_round.get(to_client, 0) + 1
+                exit_flag = "ok" if self.exit_check(to_client) else "continue"
                 msg["exit_flag"] = exit_flag
-            await websocket.send_json(msg)
+            try:
+                await websocket.send_json(msg)
+            except Exception as err:
+                sednaLogger.error(err)
 
     def exit_check(self, client_id):
         current_round = self.current_round.get(client_id, 0)
@@ -182,11 +187,12 @@ class BroadcastWs(WebSocketEndpoint):
 
 
 class AggregationServer(BaseServer):
-    def __init__(self, servername: str, host: str = None, http_port: int = 7363, exit_round: int = 1):
+    def __init__(self, servername: str, host: str = None, http_port: int = 7363,
+                 exit_round: int = 1, ws_size: int = 10 * 1024 * 1024):
         if not host:
             host = get_host_ip()
         super(AggregationServer, self).__init__(servername=servername, host=host,
-                                                http_port=http_port)
+                                                http_port=http_port, ws_size=ws_size)
         self.server_name = servername
         self.exit_round = max(int(exit_round), 1)
         self.app = FastAPI(
@@ -208,7 +214,7 @@ class AggregationServer(BaseServer):
         Start the server
         """
         self.app.add_middleware(WSEventMiddleware, exit_round=self.exit_round)
-        self.run(self.app, websocket_max_message_size=self.ws_size)
+        self.run(self.app, ws_max_size=self.ws_size)
 
     async def client_info(self, request: Request):
         server: Optional[Aggregator] = request.get(self.server_name)

@@ -58,7 +58,7 @@ spec:
           - name: "UT_SAVED_URL"
             value: "/ut_saved_url"
           - name: "infer_dataset_url"
-            value: "/data/infer_data.csv"
+            value: "/data/testData.csv"
           volumeMounts:
           - name: utdir
             mountPath: /ut_saved_url

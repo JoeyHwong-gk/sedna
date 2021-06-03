@@ -16,7 +16,7 @@ import numpy as np
 import keras.preprocessing.image as img_preprocessing
 from interface import Estimator
 
-from sedna.common.config import Context
+from sedna.common.config import Context, BaseConfig
 from sedna.datasources import TxtDataParse
 
 from sedna.core.federated_learning import FederatedLearning
@@ -24,7 +24,7 @@ from sedna.core.federated_learning import FederatedLearning
 
 def image_process(line):
     file_path, label = line.split(',')
-    original_dataset_url = Context.get_parameters('original_dataset_url')
+    original_dataset_url = BaseConfig.original_dataset_url or BaseConfig.train_dataset_url
     root_path = os.path.dirname(original_dataset_url)
     file_path = os.path.join(root_path, file_path)
     img = img_preprocessing.load_img(file_path).resize((128, 128))
@@ -37,8 +37,8 @@ def image_process(line):
 
 def main():
     # load dataset.
-    train_dataset_url = Context.get_parameters('train_dataset_url')
-    test_dataset_url = Context.get_parameters('test_dataset_url')
+    train_dataset_url = BaseConfig.train_dataset_url
+    test_dataset_url = BaseConfig.test_dataset_url
 
     train_data = TxtDataParse(data_type="train", func=image_process)
     train_data.parse(train_dataset_url)

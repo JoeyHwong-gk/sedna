@@ -14,7 +14,6 @@
 import os
 import keras
 import numpy as np
-from sklearn.metrics import precision_score
 from keras.layers import Dense, MaxPooling2D, Conv2D, Flatten, Dropout
 from keras.models import Sequential
 
@@ -89,6 +88,8 @@ class Estimator:
 
     def evaluate(self, test_data, **kwargs):
         """ Model evaluate """
+        from sklearn.metrics import precision_score
+
         y_pred = self.predict(test_data.x)
         return precision_score(test_data.y, y_pred, average="micro")
 
