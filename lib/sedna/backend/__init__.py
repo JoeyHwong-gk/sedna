@@ -43,4 +43,5 @@ def set_backend(estimator=None, config=None):
     return REGISTER(estimator=estimator, use_cuda=use_cuda,
                     model_save_path=base_model_save,
                     model_name=model_save_name,
-                    model_save_url=model_save_url)
+                    model_save_url=model_save_url
+           )
