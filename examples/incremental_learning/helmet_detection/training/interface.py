@@ -27,7 +27,9 @@ from yolo3_multiscale import Yolo3
 from yolo3_multiscale import YoloConfig
 
 os.environ['BACKEND_TYPE'] = 'TENSORFLOW'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 LOG = logging.getLogger(__name__)
+flags = tf.flags.FLAGS
 
 
 def preprocess(image, input_shape):
@@ -89,7 +91,7 @@ class Estimator:
 
         data_gen = DataGen(yolo_config, train_data.x)
 
-        max_epochs = int(kwargs.get("max_epochs", "1"))
+        max_epochs = int(kwargs.get("epochs", flags.max_epochs))
         config = tf.ConfigProto(allow_soft_placement=True)
         config.gpu_options.allow_growth = True
 
