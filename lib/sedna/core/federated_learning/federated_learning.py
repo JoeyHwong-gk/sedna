@@ -14,8 +14,6 @@
 
 import time
 
-import asyncio
-
 from sedna.core.base import JobBase
 from sedna.common.config import Context
 from sedna.common.file_ops import FileOps
@@ -49,20 +47,23 @@ class FederatedLearning(JobBase):
         super(FederatedLearning, self).__init__(
             estimator=estimator, config=config)
         self.aggregation = ClassFactory.get_cls(ClassType.FL_AGG, aggregation)
+
+        connect_timeout = int(Context.get_parameters("CONNECT_TIMEOUT", "300"))
         self.node = None
+        self.register(timeout=connect_timeout)
 
     def register(self, timeout=300):
         self.log.info(
             f"Node {self.worker_name} connect to : {self.config.agg_uri}")
         self.node = AggregationClient(
-            url=self.config.agg_uri, client_id=self.worker_name)
-        loop = asyncio.get_event_loop()
-        res = loop.run_until_complete(
-            asyncio.wait_for(self.node.connect(), timeout=timeout))
+            url=self.config.agg_uri,
+            client_id=self.worker_name,
+            ping_timeout=timeout
+        )
 
         FileOps.clean_folder([self.config.model_url], clean=False)
         self.aggregation = self.aggregation()
-        self.log.info(f"Federated learning Jobs model prepared -- {res}")
+        self.log.info(f"{self.worker_name} model prepared")
         if callable(self.estimator):
             self.estimator = self.estimator()
 
@@ -77,7 +78,6 @@ class FederatedLearning(JobBase):
         :param post_process: post process
         :param kwargs: params for training of customize estimator
         """
-
 
         callback_func = None
         if post_process is not None:
@@ -100,8 +100,10 @@ class FederatedLearning(JobBase):
             self.aggregation.weights = self.estimator.get_weights()
             send_data = {"num_samples": num_samples,
                          "weights": self.aggregation.weights}
-            received = self.node.send(
-                send_data, msg_type="update_weight", job_name=self.job_name)
+            self.node.send(send_data,
+                           msg_type="update_weight",
+                           job_name=self.job_name)
+            received = self.node.recv()
             exit_flag = False
             if (received and received["type"] == "update_weight"
                     and received["job_name"] == self.job_name):
@@ -117,6 +119,7 @@ class FederatedLearning(JobBase):
                     recv["weights"], rec_sample)
                 self.estimator.set_weights(n_weight)
                 exit_flag = received.get("exit_flag", "") == "ok"
+
             task_info = {
                 'currentRound': round_number,
                 'sampleCount': self.aggregation.total_size,

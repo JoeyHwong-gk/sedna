@@ -302,6 +302,8 @@ class FileOps:
         else:
             cls.copy_file(src, dst)
         if cls.is_local(src) and clean:
+            if cls.is_local(dst) and os.path.samefile(src, dst):
+                return dst
             cls.delete(src)
         return dst
 
