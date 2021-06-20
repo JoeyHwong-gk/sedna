@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+from urllib.parse import urlparse
 
 import tensorflow as tf
 
@@ -28,6 +29,19 @@ else:
     # version 1
     ConfigProto = tf.ConfigProto
     Session = tf.Session
+
+
+_url = os.getenv("S3_ENDPOINT_URL", "http://s3.amazonaws.com")
+if not (_url.startswith("http://") or _url.startswith("https://")):
+    _url = f"https://{_url}"
+url = urlparse(_url)
+use_ssl = url.scheme == 'https' if url.scheme else True
+
+
+os.environ["AWS_ACCESS_KEY_ID"] = os.getenv("ACCESS_KEY_ID", "")
+os.environ["AWS_SECRET_ACCESS_KEY"] = os.getenv("SECRET_ACCESS_KEY", "")
+os.environ["S3_ENDPOINT"] = url.netloc
+os.environ["S3_USE_HTTPS"] = "1" if use_ssl else "0"
 
 
 class TFBackend(BackendBase):
