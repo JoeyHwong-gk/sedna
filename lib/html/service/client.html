@@ -1,0 +1,1052 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>sedna.service.client API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sedna.service.client</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># Copyright 2021 The KubeEdge Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import os
+import json
+import time
+import asyncio
+import threading
+from copy import deepcopy
+
+from retrying import retry
+from requests import request
+import websockets
+from websockets.exceptions import InvalidStatusCode, WebSocketException
+from websockets.exceptions import ConnectionClosedError, ConnectionClosedOK
+
+from sedna.common.log import LOGGER
+from sedna.common.file_ops import FileOps
+
+
+@retry(stop_max_attempt_number=3,
+       retry_on_result=lambda x: x is None, wait_fixed=2000)
+def http_request(url, method=None, timeout=None, binary=True, **kwargs):
+    _maxTimeout = timeout if timeout else 300
+    _method = &#34;GET&#34; if not method else method
+    try:
+        response = request(method=_method, url=url, **kwargs)
+        if response.status_code == 200:
+            return (response.json() if binary else
+                    response.content.decode(&#34;utf-8&#34;))
+        elif 200 &lt; response.status_code &lt; 400:
+            LOGGER.info(f&#34;Redirect_URL: {response.url}&#34;)
+        LOGGER.error(
+            &#39;Get invalid status code %s while request %s&#39;,
+            response.status_code,
+            url)
+    except Exception as e:
+        LOGGER.error(
+            f&#39;Error occurred while request {url}, Msg: {e}&#39;, exc_info=True)
+
+
+class LCReporter(threading.Thread):
+    &#34;&#34;&#34;Inherited thread, which is an entity that periodically report to
+    the lc.
+    &#34;&#34;&#34;
+
+    def __init__(self, lc_server, message, period_interval=30):
+        threading.Thread.__init__(self)
+
+        # the value of statistics
+        self.inference_number = 0
+        self.hard_example_number = 0
+        self.period_interval = period_interval
+        self.lc_server = lc_server
+        # The system resets the period_increment after sending the messages to
+        # the LC. If the period_increment is 0 in the current period,
+        # the system does not send the messages to the LC.
+        self.period_increment = 0
+        self.message = message
+        self.lock = threading.Lock()
+
+    def update_for_edge_inference(self):
+        self.lock.acquire()
+        self.inference_number += 1
+        self.period_increment += 1
+        self.lock.release()
+
+    def update_for_collaboration_inference(self):
+        self.lock.acquire()
+        self.inference_number += 1
+        self.hard_example_number += 1
+        self.period_increment += 1
+        self.lock.release()
+
+    def run(self):
+        while True:
+
+            start = time.strftime(&#34;%Y-%m-%d %H:%M:%S&#34;, time.localtime())
+
+            time.sleep(self.period_interval)
+            if self.period_increment == 0:
+                continue
+
+            info = {
+                &#34;startTime&#34;: start,
+                &#34;updateTime&#34;: time.strftime(
+                    &#34;%Y-%m-%d %H:%M:%S&#34;,
+                    time.localtime()),
+                &#34;inferenceNumber&#34;: self.inference_number,
+                &#34;hardExampleNumber&#34;: self.hard_example_number,
+                &#34;uploadCloudRatio&#34;: (self.hard_example_number /
+                                     self.inference_number)
+            }
+            self.message[&#34;ownerInfo&#34;] = info
+            LCClient.send(self.lc_server,
+                          self.message[&#34;name&#34;],
+                          self.message)
+            self.period_increment = 0
+
+
+class LCClient:
+
+    @classmethod
+    def send(cls, lc_server, worker_name, message: dict):
+        url = &#39;{0}/sedna/workers/{1}/info&#39;.format(
+            lc_server, worker_name
+        )
+        return http_request(url=url, method=&#34;POST&#34;, json=message)
+
+
+class AggregationClient:
+    &#34;&#34;&#34;Client that interacts with the cloud aggregator.&#34;&#34;&#34;
+    _ws_timeout = 5
+    _retry = 15
+    _retry_interval_seconds = 3
+    max_size = 500 * 1024 * 1024
+
+    def __init__(self, url, client_id, **kwargs):
+        self.uri = url
+        self.client_id = client_id
+        self.ws = None
+        self.kwargs = kwargs or {}
+        timeout = self.kwargs.get(&#34;ping_timeout&#34;, &#34;&#34;)
+        timeout = int(timeout) if str(timeout).isdigit() else self._ws_timeout
+        interval = self.kwargs.get(&#34;ping_interval&#34;, &#34;&#34;)
+        interval = int(interval) if str(interval).isdigit(
+        ) else timeout * self._retry_interval_seconds
+        max_size = self.kwargs.get(&#34;max_size&#34;, &#34;&#34;)
+        max_size = int(max_size) if str(max_size).isdigit() else self.max_size
+        self.kwargs.update({
+            &#34;ping_timeout&#34;: timeout,
+            &#34;ping_interval&#34;: interval,
+            &#34;max_size&#34;: min(max_size, 16 * 1024 * 1024)
+        })
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(
+            asyncio.wait_for(self.connect(), timeout=timeout)
+        )
+
+    async def connect(self):
+        LOGGER.info(f&#34;{self.uri} connection by {self.client_id}&#34;)
+
+        try:
+            self.ws = await asyncio.wait_for(websockets.connect(
+                self.uri, **self.kwargs
+            ), self._ws_timeout)
+            await self.ws.send(json.dumps({&#39;type&#39;: &#39;subscribe&#39;,
+                                           &#39;client_id&#39;: self.client_id}))
+
+            res = await self.ws.recv()
+            return res
+        except ConnectionRefusedError:
+            LOGGER.info(f&#34;{self.uri} connection was refused by server&#34;)
+            raise
+        except ConnectionClosedError:
+            LOGGER.info(f&#34;{self.uri} connection lost&#34;)
+            raise
+        except ConnectionClosedOK:
+            LOGGER.info(f&#34;{self.uri} connection closed&#34;)
+            raise
+        except InvalidStatusCode as err:
+            LOGGER.info(
+                f&#34;{self.uri} websocket failed - &#34;
+                f&#34;with invalid status code {err.status_code}&#34;)
+            raise
+        except WebSocketException as err:
+            LOGGER.info(f&#34;{self.uri} websocket failed - with {err}&#34;)
+            raise
+        except OSError as err:
+            LOGGER.info(f&#34;{self.uri} connection failed - with {err}&#34;)
+            raise
+        except Exception:
+            LOGGER.exception(f&#34;{self.uri} websocket Error&#34;)
+            raise
+
+    async def _send(self, data):
+        for _ in range(self._retry):
+            try:
+                await asyncio.wait_for(self.ws.send(data), self._ws_timeout)
+                return
+            except Exception as err:
+                LOGGER.info(f&#34;{self.uri} send data failed - with {err}&#34;)
+                time.sleep(self._retry_interval_seconds)
+        return
+
+    async def _recv(self):
+        result = await self.ws.recv()
+        return result
+
+    def send(self, data, msg_type=&#34;message&#34;, job_name=&#34;&#34;):
+        loop = asyncio.get_event_loop()
+        j = json.dumps({
+            &#34;type&#34;: msg_type, &#34;client&#34;: self.client_id,
+            &#34;data&#34;: data, &#34;job_name&#34;: job_name
+        })
+        loop.run_until_complete(self._send(j))
+
+    def recv(self):
+        loop = asyncio.get_event_loop()
+        data = loop.run_until_complete(self._recv())
+        try:
+            return json.loads(data)
+        except Exception:
+            return data
+
+
+class ModelClient:
+    &#34;&#34;&#34;Remote model service&#34;&#34;&#34;
+
+    def __init__(self, service_name, version=&#34;&#34;,
+                 host=&#34;127.0.0.1&#34;, port=&#34;8080&#34;, protocol=&#34;http&#34;):
+        self.server_name = f&#34;{service_name}{version}&#34;
+        self.endpoint = f&#34;{protocol}://{host}:{port}/{service_name}&#34;
+
+    def check_server_status(self):
+        return http_request(url=self.endpoint, method=&#34;GET&#34;)
+
+    def inference(self, x, **kwargs):
+        &#34;&#34;&#34;Use the remote big model server to inference.&#34;&#34;&#34;
+        json_data = deepcopy(kwargs)
+        json_data.update({&#34;data&#34;: x})
+        _url = f&#34;{self.endpoint}/predict&#34;
+        return http_request(url=_url, method=&#34;POST&#34;, json=json_data)
+
+
+class KBClient:
+    &#34;&#34;&#34;Communicate with Knowledge Base server&#34;&#34;&#34;
+
+    def __init__(self, kbserver):
+        self.kbserver = f&#34;{kbserver}/knowledgebase&#34;
+
+    def upload_file(self, files, name=&#34;&#34;):
+        if not (files and os.path.isfile(files)):
+            return files
+        if not name:
+            name = os.path.basename(files)
+        LOGGER.info(f&#34;Try to upload file {name}&#34;)
+        _url = f&#34;{self.kbserver}/file/upload&#34;
+        with open(files, &#34;rb&#34;) as fin:
+            files = {&#34;file&#34;: fin}
+            outurl = http_request(url=_url, method=&#34;POST&#34;, files=files)
+        if FileOps.is_remote(outurl):
+            return outurl
+        outurl = outurl.lstrip(&#34;/&#34;)
+        FileOps.delete(files)
+        return f&#34;{self.kbserver}/{outurl}&#34;
+
+    def update_db(self, task_info_file):
+
+        _url = f&#34;{self.kbserver}/update&#34;
+
+        try:
+            with open(task_info_file, &#34;rb&#34;) as fin:
+                files = {&#34;task&#34;: fin}
+                outurl = http_request(url=_url, method=&#34;POST&#34;, files=files)
+
+        except Exception as err:
+            LOGGER.error(f&#34;Update kb error: {err}&#34;)
+            outurl = None
+        else:
+            if not FileOps.is_remote(outurl):
+                outurl = outurl.lstrip(&#34;/&#34;)
+                outurl = f&#34;{self.kbserver}/{outurl}&#34;
+            FileOps.delete(task_info_file)
+        return outurl
+
+    def update_task_status(self, tasks: str, new_status=1):
+        data = {
+            &#34;tasks&#34;: tasks,
+            &#34;status&#34;: int(new_status)
+        }
+        _url = f&#34;{self.kbserver}/update/status&#34;
+        try:
+            outurl = http_request(url=_url, method=&#34;POST&#34;, json=data)
+        except Exception as err:
+            LOGGER.error(f&#34;Update kb error: {err}&#34;)
+            outurl = None
+        if not outurl:
+            return None
+        if not FileOps.is_remote(outurl):
+            outurl = outurl.lstrip(&#34;/&#34;)
+            outurl = f&#34;{self.kbserver}/{outurl}&#34;
+        return outurl</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="sedna.service.client.http_request"><code class="name flex">
+<span>def <span class="ident">http_request</span></span>(<span>url, method=None, timeout=None, binary=True, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@retry(stop_max_attempt_number=3,
+       retry_on_result=lambda x: x is None, wait_fixed=2000)
+def http_request(url, method=None, timeout=None, binary=True, **kwargs):
+    _maxTimeout = timeout if timeout else 300
+    _method = &#34;GET&#34; if not method else method
+    try:
+        response = request(method=_method, url=url, **kwargs)
+        if response.status_code == 200:
+            return (response.json() if binary else
+                    response.content.decode(&#34;utf-8&#34;))
+        elif 200 &lt; response.status_code &lt; 400:
+            LOGGER.info(f&#34;Redirect_URL: {response.url}&#34;)
+        LOGGER.error(
+            &#39;Get invalid status code %s while request %s&#39;,
+            response.status_code,
+            url)
+    except Exception as e:
+        LOGGER.error(
+            f&#39;Error occurred while request {url}, Msg: {e}&#39;, exc_info=True)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="sedna.service.client.AggregationClient"><code class="flex name class">
+<span>class <span class="ident">AggregationClient</span></span>
+<span>(</span><span>url, client_id, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Client that interacts with the cloud aggregator.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AggregationClient:
+    &#34;&#34;&#34;Client that interacts with the cloud aggregator.&#34;&#34;&#34;
+    _ws_timeout = 5
+    _retry = 15
+    _retry_interval_seconds = 3
+    max_size = 500 * 1024 * 1024
+
+    def __init__(self, url, client_id, **kwargs):
+        self.uri = url
+        self.client_id = client_id
+        self.ws = None
+        self.kwargs = kwargs or {}
+        timeout = self.kwargs.get(&#34;ping_timeout&#34;, &#34;&#34;)
+        timeout = int(timeout) if str(timeout).isdigit() else self._ws_timeout
+        interval = self.kwargs.get(&#34;ping_interval&#34;, &#34;&#34;)
+        interval = int(interval) if str(interval).isdigit(
+        ) else timeout * self._retry_interval_seconds
+        max_size = self.kwargs.get(&#34;max_size&#34;, &#34;&#34;)
+        max_size = int(max_size) if str(max_size).isdigit() else self.max_size
+        self.kwargs.update({
+            &#34;ping_timeout&#34;: timeout,
+            &#34;ping_interval&#34;: interval,
+            &#34;max_size&#34;: min(max_size, 16 * 1024 * 1024)
+        })
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(
+            asyncio.wait_for(self.connect(), timeout=timeout)
+        )
+
+    async def connect(self):
+        LOGGER.info(f&#34;{self.uri} connection by {self.client_id}&#34;)
+
+        try:
+            self.ws = await asyncio.wait_for(websockets.connect(
+                self.uri, **self.kwargs
+            ), self._ws_timeout)
+            await self.ws.send(json.dumps({&#39;type&#39;: &#39;subscribe&#39;,
+                                           &#39;client_id&#39;: self.client_id}))
+
+            res = await self.ws.recv()
+            return res
+        except ConnectionRefusedError:
+            LOGGER.info(f&#34;{self.uri} connection was refused by server&#34;)
+            raise
+        except ConnectionClosedError:
+            LOGGER.info(f&#34;{self.uri} connection lost&#34;)
+            raise
+        except ConnectionClosedOK:
+            LOGGER.info(f&#34;{self.uri} connection closed&#34;)
+            raise
+        except InvalidStatusCode as err:
+            LOGGER.info(
+                f&#34;{self.uri} websocket failed - &#34;
+                f&#34;with invalid status code {err.status_code}&#34;)
+            raise
+        except WebSocketException as err:
+            LOGGER.info(f&#34;{self.uri} websocket failed - with {err}&#34;)
+            raise
+        except OSError as err:
+            LOGGER.info(f&#34;{self.uri} connection failed - with {err}&#34;)
+            raise
+        except Exception:
+            LOGGER.exception(f&#34;{self.uri} websocket Error&#34;)
+            raise
+
+    async def _send(self, data):
+        for _ in range(self._retry):
+            try:
+                await asyncio.wait_for(self.ws.send(data), self._ws_timeout)
+                return
+            except Exception as err:
+                LOGGER.info(f&#34;{self.uri} send data failed - with {err}&#34;)
+                time.sleep(self._retry_interval_seconds)
+        return
+
+    async def _recv(self):
+        result = await self.ws.recv()
+        return result
+
+    def send(self, data, msg_type=&#34;message&#34;, job_name=&#34;&#34;):
+        loop = asyncio.get_event_loop()
+        j = json.dumps({
+            &#34;type&#34;: msg_type, &#34;client&#34;: self.client_id,
+            &#34;data&#34;: data, &#34;job_name&#34;: job_name
+        })
+        loop.run_until_complete(self._send(j))
+
+    def recv(self):
+        loop = asyncio.get_event_loop()
+        data = loop.run_until_complete(self._recv())
+        try:
+            return json.loads(data)
+        except Exception:
+            return data</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="sedna.service.client.AggregationClient.max_size"><code class="name">var <span class="ident">max_size</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="sedna.service.client.AggregationClient.connect"><code class="name flex">
+<span>async def <span class="ident">connect</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def connect(self):
+    LOGGER.info(f&#34;{self.uri} connection by {self.client_id}&#34;)
+
+    try:
+        self.ws = await asyncio.wait_for(websockets.connect(
+            self.uri, **self.kwargs
+        ), self._ws_timeout)
+        await self.ws.send(json.dumps({&#39;type&#39;: &#39;subscribe&#39;,
+                                       &#39;client_id&#39;: self.client_id}))
+
+        res = await self.ws.recv()
+        return res
+    except ConnectionRefusedError:
+        LOGGER.info(f&#34;{self.uri} connection was refused by server&#34;)
+        raise
+    except ConnectionClosedError:
+        LOGGER.info(f&#34;{self.uri} connection lost&#34;)
+        raise
+    except ConnectionClosedOK:
+        LOGGER.info(f&#34;{self.uri} connection closed&#34;)
+        raise
+    except InvalidStatusCode as err:
+        LOGGER.info(
+            f&#34;{self.uri} websocket failed - &#34;
+            f&#34;with invalid status code {err.status_code}&#34;)
+        raise
+    except WebSocketException as err:
+        LOGGER.info(f&#34;{self.uri} websocket failed - with {err}&#34;)
+        raise
+    except OSError as err:
+        LOGGER.info(f&#34;{self.uri} connection failed - with {err}&#34;)
+        raise
+    except Exception:
+        LOGGER.exception(f&#34;{self.uri} websocket Error&#34;)
+        raise</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.client.AggregationClient.recv"><code class="name flex">
+<span>def <span class="ident">recv</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def recv(self):
+    loop = asyncio.get_event_loop()
+    data = loop.run_until_complete(self._recv())
+    try:
+        return json.loads(data)
+    except Exception:
+        return data</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.client.AggregationClient.send"><code class="name flex">
+<span>def <span class="ident">send</span></span>(<span>self, data, msg_type='message', job_name='')</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send(self, data, msg_type=&#34;message&#34;, job_name=&#34;&#34;):
+    loop = asyncio.get_event_loop()
+    j = json.dumps({
+        &#34;type&#34;: msg_type, &#34;client&#34;: self.client_id,
+        &#34;data&#34;: data, &#34;job_name&#34;: job_name
+    })
+    loop.run_until_complete(self._send(j))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="sedna.service.client.KBClient"><code class="flex name class">
+<span>class <span class="ident">KBClient</span></span>
+<span>(</span><span>kbserver)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Communicate with Knowledge Base server</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class KBClient:
+    &#34;&#34;&#34;Communicate with Knowledge Base server&#34;&#34;&#34;
+
+    def __init__(self, kbserver):
+        self.kbserver = f&#34;{kbserver}/knowledgebase&#34;
+
+    def upload_file(self, files, name=&#34;&#34;):
+        if not (files and os.path.isfile(files)):
+            return files
+        if not name:
+            name = os.path.basename(files)
+        LOGGER.info(f&#34;Try to upload file {name}&#34;)
+        _url = f&#34;{self.kbserver}/file/upload&#34;
+        with open(files, &#34;rb&#34;) as fin:
+            files = {&#34;file&#34;: fin}
+            outurl = http_request(url=_url, method=&#34;POST&#34;, files=files)
+        if FileOps.is_remote(outurl):
+            return outurl
+        outurl = outurl.lstrip(&#34;/&#34;)
+        FileOps.delete(files)
+        return f&#34;{self.kbserver}/{outurl}&#34;
+
+    def update_db(self, task_info_file):
+
+        _url = f&#34;{self.kbserver}/update&#34;
+
+        try:
+            with open(task_info_file, &#34;rb&#34;) as fin:
+                files = {&#34;task&#34;: fin}
+                outurl = http_request(url=_url, method=&#34;POST&#34;, files=files)
+
+        except Exception as err:
+            LOGGER.error(f&#34;Update kb error: {err}&#34;)
+            outurl = None
+        else:
+            if not FileOps.is_remote(outurl):
+                outurl = outurl.lstrip(&#34;/&#34;)
+                outurl = f&#34;{self.kbserver}/{outurl}&#34;
+            FileOps.delete(task_info_file)
+        return outurl
+
+    def update_task_status(self, tasks: str, new_status=1):
+        data = {
+            &#34;tasks&#34;: tasks,
+            &#34;status&#34;: int(new_status)
+        }
+        _url = f&#34;{self.kbserver}/update/status&#34;
+        try:
+            outurl = http_request(url=_url, method=&#34;POST&#34;, json=data)
+        except Exception as err:
+            LOGGER.error(f&#34;Update kb error: {err}&#34;)
+            outurl = None
+        if not outurl:
+            return None
+        if not FileOps.is_remote(outurl):
+            outurl = outurl.lstrip(&#34;/&#34;)
+            outurl = f&#34;{self.kbserver}/{outurl}&#34;
+        return outurl</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="sedna.service.client.KBClient.update_db"><code class="name flex">
+<span>def <span class="ident">update_db</span></span>(<span>self, task_info_file)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_db(self, task_info_file):
+
+    _url = f&#34;{self.kbserver}/update&#34;
+
+    try:
+        with open(task_info_file, &#34;rb&#34;) as fin:
+            files = {&#34;task&#34;: fin}
+            outurl = http_request(url=_url, method=&#34;POST&#34;, files=files)
+
+    except Exception as err:
+        LOGGER.error(f&#34;Update kb error: {err}&#34;)
+        outurl = None
+    else:
+        if not FileOps.is_remote(outurl):
+            outurl = outurl.lstrip(&#34;/&#34;)
+            outurl = f&#34;{self.kbserver}/{outurl}&#34;
+        FileOps.delete(task_info_file)
+    return outurl</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.client.KBClient.update_task_status"><code class="name flex">
+<span>def <span class="ident">update_task_status</span></span>(<span>self, tasks: str, new_status=1)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_task_status(self, tasks: str, new_status=1):
+    data = {
+        &#34;tasks&#34;: tasks,
+        &#34;status&#34;: int(new_status)
+    }
+    _url = f&#34;{self.kbserver}/update/status&#34;
+    try:
+        outurl = http_request(url=_url, method=&#34;POST&#34;, json=data)
+    except Exception as err:
+        LOGGER.error(f&#34;Update kb error: {err}&#34;)
+        outurl = None
+    if not outurl:
+        return None
+    if not FileOps.is_remote(outurl):
+        outurl = outurl.lstrip(&#34;/&#34;)
+        outurl = f&#34;{self.kbserver}/{outurl}&#34;
+    return outurl</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.client.KBClient.upload_file"><code class="name flex">
+<span>def <span class="ident">upload_file</span></span>(<span>self, files, name='')</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def upload_file(self, files, name=&#34;&#34;):
+    if not (files and os.path.isfile(files)):
+        return files
+    if not name:
+        name = os.path.basename(files)
+    LOGGER.info(f&#34;Try to upload file {name}&#34;)
+    _url = f&#34;{self.kbserver}/file/upload&#34;
+    with open(files, &#34;rb&#34;) as fin:
+        files = {&#34;file&#34;: fin}
+        outurl = http_request(url=_url, method=&#34;POST&#34;, files=files)
+    if FileOps.is_remote(outurl):
+        return outurl
+    outurl = outurl.lstrip(&#34;/&#34;)
+    FileOps.delete(files)
+    return f&#34;{self.kbserver}/{outurl}&#34;</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="sedna.service.client.LCClient"><code class="flex name class">
+<span>class <span class="ident">LCClient</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LCClient:
+
+    @classmethod
+    def send(cls, lc_server, worker_name, message: dict):
+        url = &#39;{0}/sedna/workers/{1}/info&#39;.format(
+            lc_server, worker_name
+        )
+        return http_request(url=url, method=&#34;POST&#34;, json=message)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="sedna.service.client.LCClient.send"><code class="name flex">
+<span>def <span class="ident">send</span></span>(<span>lc_server, worker_name, message: dict)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def send(cls, lc_server, worker_name, message: dict):
+    url = &#39;{0}/sedna/workers/{1}/info&#39;.format(
+        lc_server, worker_name
+    )
+    return http_request(url=url, method=&#34;POST&#34;, json=message)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="sedna.service.client.LCReporter"><code class="flex name class">
+<span>class <span class="ident">LCReporter</span></span>
+<span>(</span><span>lc_server, message, period_interval=30)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Inherited thread, which is an entity that periodically report to
+the lc.</p>
+<p>This constructor should always be called with keyword arguments. Arguments are:</p>
+<p><em>group</em> should be None; reserved for future extension when a ThreadGroup
+class is implemented.</p>
+<p><em>target</em> is the callable object to be invoked by the run()
+method. Defaults to None, meaning nothing is called.</p>
+<p><em>name</em> is the thread name. By default, a unique name is constructed of
+the form "Thread-N" where N is a small decimal number.</p>
+<p><em>args</em> is the argument tuple for the target invocation. Defaults to ().</p>
+<p><em>kwargs</em> is a dictionary of keyword arguments for the target
+invocation. Defaults to {}.</p>
+<p>If a subclass overrides the constructor, it must make sure to invoke
+the base class constructor (Thread.<strong>init</strong>()) before doing anything
+else to the thread.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LCReporter(threading.Thread):
+    &#34;&#34;&#34;Inherited thread, which is an entity that periodically report to
+    the lc.
+    &#34;&#34;&#34;
+
+    def __init__(self, lc_server, message, period_interval=30):
+        threading.Thread.__init__(self)
+
+        # the value of statistics
+        self.inference_number = 0
+        self.hard_example_number = 0
+        self.period_interval = period_interval
+        self.lc_server = lc_server
+        # The system resets the period_increment after sending the messages to
+        # the LC. If the period_increment is 0 in the current period,
+        # the system does not send the messages to the LC.
+        self.period_increment = 0
+        self.message = message
+        self.lock = threading.Lock()
+
+    def update_for_edge_inference(self):
+        self.lock.acquire()
+        self.inference_number += 1
+        self.period_increment += 1
+        self.lock.release()
+
+    def update_for_collaboration_inference(self):
+        self.lock.acquire()
+        self.inference_number += 1
+        self.hard_example_number += 1
+        self.period_increment += 1
+        self.lock.release()
+
+    def run(self):
+        while True:
+
+            start = time.strftime(&#34;%Y-%m-%d %H:%M:%S&#34;, time.localtime())
+
+            time.sleep(self.period_interval)
+            if self.period_increment == 0:
+                continue
+
+            info = {
+                &#34;startTime&#34;: start,
+                &#34;updateTime&#34;: time.strftime(
+                    &#34;%Y-%m-%d %H:%M:%S&#34;,
+                    time.localtime()),
+                &#34;inferenceNumber&#34;: self.inference_number,
+                &#34;hardExampleNumber&#34;: self.hard_example_number,
+                &#34;uploadCloudRatio&#34;: (self.hard_example_number /
+                                     self.inference_number)
+            }
+            self.message[&#34;ownerInfo&#34;] = info
+            LCClient.send(self.lc_server,
+                          self.message[&#34;name&#34;],
+                          self.message)
+            self.period_increment = 0</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>threading.Thread</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="sedna.service.client.LCReporter.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Method representing the thread's activity.</p>
+<p>You may override this method in a subclass. The standard run() method
+invokes the callable object passed to the object's constructor as the
+target argument, if any, with sequential and keyword arguments taken
+from the args and kwargs arguments, respectively.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run(self):
+    while True:
+
+        start = time.strftime(&#34;%Y-%m-%d %H:%M:%S&#34;, time.localtime())
+
+        time.sleep(self.period_interval)
+        if self.period_increment == 0:
+            continue
+
+        info = {
+            &#34;startTime&#34;: start,
+            &#34;updateTime&#34;: time.strftime(
+                &#34;%Y-%m-%d %H:%M:%S&#34;,
+                time.localtime()),
+            &#34;inferenceNumber&#34;: self.inference_number,
+            &#34;hardExampleNumber&#34;: self.hard_example_number,
+            &#34;uploadCloudRatio&#34;: (self.hard_example_number /
+                                 self.inference_number)
+        }
+        self.message[&#34;ownerInfo&#34;] = info
+        LCClient.send(self.lc_server,
+                      self.message[&#34;name&#34;],
+                      self.message)
+        self.period_increment = 0</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.client.LCReporter.update_for_collaboration_inference"><code class="name flex">
+<span>def <span class="ident">update_for_collaboration_inference</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_for_collaboration_inference(self):
+    self.lock.acquire()
+    self.inference_number += 1
+    self.hard_example_number += 1
+    self.period_increment += 1
+    self.lock.release()</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.client.LCReporter.update_for_edge_inference"><code class="name flex">
+<span>def <span class="ident">update_for_edge_inference</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_for_edge_inference(self):
+    self.lock.acquire()
+    self.inference_number += 1
+    self.period_increment += 1
+    self.lock.release()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="sedna.service.client.ModelClient"><code class="flex name class">
+<span>class <span class="ident">ModelClient</span></span>
+<span>(</span><span>service_name, version='', host='127.0.0.1', port='8080', protocol='http')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Remote model service</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ModelClient:
+    &#34;&#34;&#34;Remote model service&#34;&#34;&#34;
+
+    def __init__(self, service_name, version=&#34;&#34;,
+                 host=&#34;127.0.0.1&#34;, port=&#34;8080&#34;, protocol=&#34;http&#34;):
+        self.server_name = f&#34;{service_name}{version}&#34;
+        self.endpoint = f&#34;{protocol}://{host}:{port}/{service_name}&#34;
+
+    def check_server_status(self):
+        return http_request(url=self.endpoint, method=&#34;GET&#34;)
+
+    def inference(self, x, **kwargs):
+        &#34;&#34;&#34;Use the remote big model server to inference.&#34;&#34;&#34;
+        json_data = deepcopy(kwargs)
+        json_data.update({&#34;data&#34;: x})
+        _url = f&#34;{self.endpoint}/predict&#34;
+        return http_request(url=_url, method=&#34;POST&#34;, json=json_data)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="sedna.service.client.ModelClient.check_server_status"><code class="name flex">
+<span>def <span class="ident">check_server_status</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def check_server_status(self):
+    return http_request(url=self.endpoint, method=&#34;GET&#34;)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.client.ModelClient.inference"><code class="name flex">
+<span>def <span class="ident">inference</span></span>(<span>self, x, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Use the remote big model server to inference.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def inference(self, x, **kwargs):
+    &#34;&#34;&#34;Use the remote big model server to inference.&#34;&#34;&#34;
+    json_data = deepcopy(kwargs)
+    json_data.update({&#34;data&#34;: x})
+    _url = f&#34;{self.endpoint}/predict&#34;
+    return http_request(url=_url, method=&#34;POST&#34;, json=json_data)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sedna.service" href="index.html">sedna.service</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="sedna.service.client.http_request" href="#sedna.service.client.http_request">http_request</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="sedna.service.client.AggregationClient" href="#sedna.service.client.AggregationClient">AggregationClient</a></code></h4>
+<ul class="">
+<li><code><a title="sedna.service.client.AggregationClient.connect" href="#sedna.service.client.AggregationClient.connect">connect</a></code></li>
+<li><code><a title="sedna.service.client.AggregationClient.max_size" href="#sedna.service.client.AggregationClient.max_size">max_size</a></code></li>
+<li><code><a title="sedna.service.client.AggregationClient.recv" href="#sedna.service.client.AggregationClient.recv">recv</a></code></li>
+<li><code><a title="sedna.service.client.AggregationClient.send" href="#sedna.service.client.AggregationClient.send">send</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sedna.service.client.KBClient" href="#sedna.service.client.KBClient">KBClient</a></code></h4>
+<ul class="">
+<li><code><a title="sedna.service.client.KBClient.update_db" href="#sedna.service.client.KBClient.update_db">update_db</a></code></li>
+<li><code><a title="sedna.service.client.KBClient.update_task_status" href="#sedna.service.client.KBClient.update_task_status">update_task_status</a></code></li>
+<li><code><a title="sedna.service.client.KBClient.upload_file" href="#sedna.service.client.KBClient.upload_file">upload_file</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sedna.service.client.LCClient" href="#sedna.service.client.LCClient">LCClient</a></code></h4>
+<ul class="">
+<li><code><a title="sedna.service.client.LCClient.send" href="#sedna.service.client.LCClient.send">send</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sedna.service.client.LCReporter" href="#sedna.service.client.LCReporter">LCReporter</a></code></h4>
+<ul class="">
+<li><code><a title="sedna.service.client.LCReporter.run" href="#sedna.service.client.LCReporter.run">run</a></code></li>
+<li><code><a title="sedna.service.client.LCReporter.update_for_collaboration_inference" href="#sedna.service.client.LCReporter.update_for_collaboration_inference">update_for_collaboration_inference</a></code></li>
+<li><code><a title="sedna.service.client.LCReporter.update_for_edge_inference" href="#sedna.service.client.LCReporter.update_for_edge_inference">update_for_edge_inference</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sedna.service.client.ModelClient" href="#sedna.service.client.ModelClient">ModelClient</a></code></h4>
+<ul class="">
+<li><code><a title="sedna.service.client.ModelClient.check_server_status" href="#sedna.service.client.ModelClient.check_server_status">check_server_status</a></code></li>
+<li><code><a title="sedna.service.client.ModelClient.inference" href="#sedna.service.client.ModelClient.inference">inference</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,1123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>sedna.service.server.knowledgeBase.model API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sedna.service.server.knowledgeBase.model</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># Copyright 2021 The KubeEdge Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+from sqlalchemy import Column, String, Integer, Boolean, Text
+from sqlalchemy import DateTime, Float, SmallInteger, ForeignKey, func
+from sqlalchemy.orm import relationship
+
+from .database import Base, engine
+
+__all__ = (&#39;TaskGrp&#39;, &#39;Tasks&#39;, &#39;TaskModel&#39;, &#39;TaskRelation&#39;, &#39;Samples&#39;,
+           &#39;TaskSample&#39;, &#39;get_or_create&#39;, &#39;engine&#39;, &#39;init_db&#39;)
+
+
+class TaskGrp(Base):
+    &#34;&#34;&#34;Task groups&#34;&#34;&#34;
+    __tablename__ = &#39;ll_task_grp&#39;
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    name = Column(String(100), unique=True, nullable=False,
+                  comment=&#39;task group name&#39;)
+    deploy = Column(Boolean(create_constraint=False), default=False)
+
+    sample_num = Column(Integer, default=0, comment=&#39;int of sample number&#39;)
+    task_num = Column(Integer, default=0, comment=&#39;int of task number&#39;)
+
+
+class Tasks(Base):
+    &#34;&#34;&#34;Task table&#34;&#34;&#34;
+    __tablename__ = &#39;ll_tasks&#39;
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    name = Column(String(100), unique=True,
+                  nullable=False, comment=&#39;task name&#39;)
+    task_attr = Column(Text, default=&#34;{}&#34;, comment=&#39;task attribute, json&#39;)
+    created_at = Column(DateTime, server_default=func.now(),
+                        comment=&#39;task create time&#39;)
+    updated_at = Column(DateTime, server_default=func.now(),
+                        onupdate=func.now(), comment=&#39;task update time&#39;)
+
+    def __repr__(self):
+        return self.name
+
+
+class TaskModel(Base):
+    &#34;&#34;&#34;model belong tasks&#34;&#34;&#34;
+    __tablename__ = &#39;ll_task_models&#39;
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    task_id = Column(Integer, ForeignKey(&#39;ll_task_grp.id&#39;),
+                     index=True, nullable=False)
+    task = relationship(&#39;TaskGrp&#39;)
+    model_url = Column(Text, default=&#34;&#34;, comment=&#39;model save url/path&#39;)
+    is_current = Column(Boolean(create_constraint=False), default=False)
+    created_at = Column(DateTime, server_default=func.now(),
+                        comment=&#39;model create time&#39;)
+
+
+class TaskRelation(Base):
+    &#34;&#34;&#34; relation between two tasks&#34;&#34;&#34;
+    __tablename__ = &#39;ll_task_relation&#39;
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    grp_id = Column(Integer, ForeignKey(&#39;ll_task_grp.id&#39;),
+                    index=True, nullable=False)
+    grp = relationship(&#39;TaskGrp&#39;)
+    task_id = Column(Integer, ForeignKey(&#39;ll_tasks.id&#39;),
+                     index=True, nullable=False)
+    task = relationship(&#39;Tasks&#39;)
+    transfer_radio = Column(Float, default=0.0, comment=&#34;task transfer radio&#34;)
+
+
+class Samples(Base):
+    &#34;&#34;&#34; Sample storage &#34;&#34;&#34;
+    __tablename__ = &#39;ll_samples&#39;
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    data_url = Column(Text, default=&#34;&#34;, comment=&#39;dataset save url/path&#39;)
+    descr = Column(Text, default=&#34;&#34;, comment=&#39;dataset description&#39;)
+    data_type = Column(
+        SmallInteger,
+        default=0,
+        index=True,
+        comment=&#39;type of dataset, 0: train, 1: evaluation, 2: hard sample&#39;)
+    updated_at = Column(DateTime, server_default=func.now(),
+                        onupdate=func.now(), comment=&#39;dataset update time&#39;)
+    sample_num = Column(Integer, default=0, comment=&#39;int of sample number&#39;)
+
+
+class TaskSample(Base):
+    &#34;&#34;&#34; Sample of tasks&#34;&#34;&#34;
+    __tablename__ = &#39;ll_task_sample&#39;
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    sample_id = Column(Integer, ForeignKey(
+        &#39;ll_samples.id&#39;), index=True, nullable=False)
+    sample = relationship(&#39;Samples&#39;)
+    task_id = Column(Integer, ForeignKey(&#39;ll_tasks.id&#39;),
+                     index=True, nullable=False)
+    task = relationship(&#39;Tasks&#39;)
+
+
+def get_or_create(session, model, **kwargs):
+    instance = session.query(model).filter_by(**kwargs).first()
+    if instance:
+        return instance, False
+    else:
+        instance = model(**kwargs)
+        return instance, True
+
+
+def init_db():
+    Base.metadata.create_all(bind=engine)
+    TaskGrp.__table__.create(bind=engine, checkfirst=True)
+    Tasks.__table__.create(bind=engine, checkfirst=True)
+    TaskModel.__table__.create(bind=engine, checkfirst=True)
+    TaskRelation.__table__.create(bind=engine, checkfirst=True)
+    Samples.__table__.create(bind=engine, checkfirst=True)
+    TaskSample.__table__.create(bind=engine, checkfirst=True)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="sedna.service.server.knowledgeBase.model.get_or_create"><code class="name flex">
+<span>def <span class="ident">get_or_create</span></span>(<span>session, model, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_or_create(session, model, **kwargs):
+    instance = session.query(model).filter_by(**kwargs).first()
+    if instance:
+        return instance, False
+    else:
+        instance = model(**kwargs)
+        return instance, True</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.init_db"><code class="name flex">
+<span>def <span class="ident">init_db</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def init_db():
+    Base.metadata.create_all(bind=engine)
+    TaskGrp.__table__.create(bind=engine, checkfirst=True)
+    Tasks.__table__.create(bind=engine, checkfirst=True)
+    TaskModel.__table__.create(bind=engine, checkfirst=True)
+    TaskRelation.__table__.create(bind=engine, checkfirst=True)
+    Samples.__table__.create(bind=engine, checkfirst=True)
+    TaskSample.__table__.create(bind=engine, checkfirst=True)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="sedna.service.server.knowledgeBase.model.Samples"><code class="flex name class">
+<span>class <span class="ident">Samples</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sample storage </p>
+<p>A simple constructor that allows initialization from kwargs.</p>
+<p>Sets attributes on the constructed instance using the names and
+values in <code>kwargs</code>.</p>
+<p>Only keys that are present as
+attributes of the instance's class are allowed. These could be,
+for example, any mapped columns or relationships.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Samples(Base):
+    &#34;&#34;&#34; Sample storage &#34;&#34;&#34;
+    __tablename__ = &#39;ll_samples&#39;
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    data_url = Column(Text, default=&#34;&#34;, comment=&#39;dataset save url/path&#39;)
+    descr = Column(Text, default=&#34;&#34;, comment=&#39;dataset description&#39;)
+    data_type = Column(
+        SmallInteger,
+        default=0,
+        index=True,
+        comment=&#39;type of dataset, 0: train, 1: evaluation, 2: hard sample&#39;)
+    updated_at = Column(DateTime, server_default=func.now(),
+                        onupdate=func.now(), comment=&#39;dataset update time&#39;)
+    sample_num = Column(Integer, default=0, comment=&#39;int of sample number&#39;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>sqlalchemy.ext.declarative.api.Base</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="sedna.service.server.knowledgeBase.model.Samples.data_type"><code class="name">var <span class="ident">data_type</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.Samples.data_url"><code class="name">var <span class="ident">data_url</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.Samples.descr"><code class="name">var <span class="ident">descr</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.Samples.id"><code class="name">var <span class="ident">id</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.Samples.sample_num"><code class="name">var <span class="ident">sample_num</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.Samples.updated_at"><code class="name">var <span class="ident">updated_at</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskGrp"><code class="flex name class">
+<span>class <span class="ident">TaskGrp</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Task groups</p>
+<p>A simple constructor that allows initialization from kwargs.</p>
+<p>Sets attributes on the constructed instance using the names and
+values in <code>kwargs</code>.</p>
+<p>Only keys that are present as
+attributes of the instance's class are allowed. These could be,
+for example, any mapped columns or relationships.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TaskGrp(Base):
+    &#34;&#34;&#34;Task groups&#34;&#34;&#34;
+    __tablename__ = &#39;ll_task_grp&#39;
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    name = Column(String(100), unique=True, nullable=False,
+                  comment=&#39;task group name&#39;)
+    deploy = Column(Boolean(create_constraint=False), default=False)
+
+    sample_num = Column(Integer, default=0, comment=&#39;int of sample number&#39;)
+    task_num = Column(Integer, default=0, comment=&#39;int of task number&#39;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>sqlalchemy.ext.declarative.api.Base</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="sedna.service.server.knowledgeBase.model.TaskGrp.deploy"><code class="name">var <span class="ident">deploy</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskGrp.id"><code class="name">var <span class="ident">id</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskGrp.name"><code class="name">var <span class="ident">name</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskGrp.sample_num"><code class="name">var <span class="ident">sample_num</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskGrp.task_num"><code class="name">var <span class="ident">task_num</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskModel"><code class="flex name class">
+<span>class <span class="ident">TaskModel</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>model belong tasks</p>
+<p>A simple constructor that allows initialization from kwargs.</p>
+<p>Sets attributes on the constructed instance using the names and
+values in <code>kwargs</code>.</p>
+<p>Only keys that are present as
+attributes of the instance's class are allowed. These could be,
+for example, any mapped columns or relationships.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TaskModel(Base):
+    &#34;&#34;&#34;model belong tasks&#34;&#34;&#34;
+    __tablename__ = &#39;ll_task_models&#39;
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    task_id = Column(Integer, ForeignKey(&#39;ll_task_grp.id&#39;),
+                     index=True, nullable=False)
+    task = relationship(&#39;TaskGrp&#39;)
+    model_url = Column(Text, default=&#34;&#34;, comment=&#39;model save url/path&#39;)
+    is_current = Column(Boolean(create_constraint=False), default=False)
+    created_at = Column(DateTime, server_default=func.now(),
+                        comment=&#39;model create time&#39;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>sqlalchemy.ext.declarative.api.Base</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="sedna.service.server.knowledgeBase.model.TaskModel.created_at"><code class="name">var <span class="ident">created_at</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskModel.id"><code class="name">var <span class="ident">id</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskModel.is_current"><code class="name">var <span class="ident">is_current</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskModel.model_url"><code class="name">var <span class="ident">model_url</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskModel.task"><code class="name">var <span class="ident">task</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskModel.task_id"><code class="name">var <span class="ident">task_id</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskRelation"><code class="flex name class">
+<span>class <span class="ident">TaskRelation</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>relation between two tasks</p>
+<p>A simple constructor that allows initialization from kwargs.</p>
+<p>Sets attributes on the constructed instance using the names and
+values in <code>kwargs</code>.</p>
+<p>Only keys that are present as
+attributes of the instance's class are allowed. These could be,
+for example, any mapped columns or relationships.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TaskRelation(Base):
+    &#34;&#34;&#34; relation between two tasks&#34;&#34;&#34;
+    __tablename__ = &#39;ll_task_relation&#39;
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    grp_id = Column(Integer, ForeignKey(&#39;ll_task_grp.id&#39;),
+                    index=True, nullable=False)
+    grp = relationship(&#39;TaskGrp&#39;)
+    task_id = Column(Integer, ForeignKey(&#39;ll_tasks.id&#39;),
+                     index=True, nullable=False)
+    task = relationship(&#39;Tasks&#39;)
+    transfer_radio = Column(Float, default=0.0, comment=&#34;task transfer radio&#34;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>sqlalchemy.ext.declarative.api.Base</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="sedna.service.server.knowledgeBase.model.TaskRelation.grp"><code class="name">var <span class="ident">grp</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskRelation.grp_id"><code class="name">var <span class="ident">grp_id</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskRelation.id"><code class="name">var <span class="ident">id</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskRelation.task"><code class="name">var <span class="ident">task</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskRelation.task_id"><code class="name">var <span class="ident">task_id</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskRelation.transfer_radio"><code class="name">var <span class="ident">transfer_radio</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskSample"><code class="flex name class">
+<span>class <span class="ident">TaskSample</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sample of tasks</p>
+<p>A simple constructor that allows initialization from kwargs.</p>
+<p>Sets attributes on the constructed instance using the names and
+values in <code>kwargs</code>.</p>
+<p>Only keys that are present as
+attributes of the instance's class are allowed. These could be,
+for example, any mapped columns or relationships.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TaskSample(Base):
+    &#34;&#34;&#34; Sample of tasks&#34;&#34;&#34;
+    __tablename__ = &#39;ll_task_sample&#39;
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    sample_id = Column(Integer, ForeignKey(
+        &#39;ll_samples.id&#39;), index=True, nullable=False)
+    sample = relationship(&#39;Samples&#39;)
+    task_id = Column(Integer, ForeignKey(&#39;ll_tasks.id&#39;),
+                     index=True, nullable=False)
+    task = relationship(&#39;Tasks&#39;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>sqlalchemy.ext.declarative.api.Base</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="sedna.service.server.knowledgeBase.model.TaskSample.id"><code class="name">var <span class="ident">id</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskSample.sample"><code class="name">var <span class="ident">sample</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskSample.sample_id"><code class="name">var <span class="ident">sample_id</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskSample.task"><code class="name">var <span class="ident">task</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.TaskSample.task_id"><code class="name">var <span class="ident">task_id</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.Tasks"><code class="flex name class">
+<span>class <span class="ident">Tasks</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Task table</p>
+<p>A simple constructor that allows initialization from kwargs.</p>
+<p>Sets attributes on the constructed instance using the names and
+values in <code>kwargs</code>.</p>
+<p>Only keys that are present as
+attributes of the instance's class are allowed. These could be,
+for example, any mapped columns or relationships.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Tasks(Base):
+    &#34;&#34;&#34;Task table&#34;&#34;&#34;
+    __tablename__ = &#39;ll_tasks&#39;
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    name = Column(String(100), unique=True,
+                  nullable=False, comment=&#39;task name&#39;)
+    task_attr = Column(Text, default=&#34;{}&#34;, comment=&#39;task attribute, json&#39;)
+    created_at = Column(DateTime, server_default=func.now(),
+                        comment=&#39;task create time&#39;)
+    updated_at = Column(DateTime, server_default=func.now(),
+                        onupdate=func.now(), comment=&#39;task update time&#39;)
+
+    def __repr__(self):
+        return self.name</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>sqlalchemy.ext.declarative.api.Base</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="sedna.service.server.knowledgeBase.model.Tasks.created_at"><code class="name">var <span class="ident">created_at</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.Tasks.id"><code class="name">var <span class="ident">id</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.Tasks.name"><code class="name">var <span class="ident">name</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.Tasks.task_attr"><code class="name">var <span class="ident">task_attr</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+<dt id="sedna.service.server.knowledgeBase.model.Tasks.updated_at"><code class="name">var <span class="ident">updated_at</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    if instance is None:
+        return self
+
+    dict_ = instance_dict(instance)
+    if self._supports_population and self.key in dict_:
+        return dict_[self.key]
+    else:
+        return self.impl.get(instance_state(instance), dict_)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sedna.service.server.knowledgeBase" href="index.html">sedna.service.server.knowledgeBase</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="sedna.service.server.knowledgeBase.model.get_or_create" href="#sedna.service.server.knowledgeBase.model.get_or_create">get_or_create</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.init_db" href="#sedna.service.server.knowledgeBase.model.init_db">init_db</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="sedna.service.server.knowledgeBase.model.Samples" href="#sedna.service.server.knowledgeBase.model.Samples">Samples</a></code></h4>
+<ul class="two-column">
+<li><code><a title="sedna.service.server.knowledgeBase.model.Samples.data_type" href="#sedna.service.server.knowledgeBase.model.Samples.data_type">data_type</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.Samples.data_url" href="#sedna.service.server.knowledgeBase.model.Samples.data_url">data_url</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.Samples.descr" href="#sedna.service.server.knowledgeBase.model.Samples.descr">descr</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.Samples.id" href="#sedna.service.server.knowledgeBase.model.Samples.id">id</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.Samples.sample_num" href="#sedna.service.server.knowledgeBase.model.Samples.sample_num">sample_num</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.Samples.updated_at" href="#sedna.service.server.knowledgeBase.model.Samples.updated_at">updated_at</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sedna.service.server.knowledgeBase.model.TaskGrp" href="#sedna.service.server.knowledgeBase.model.TaskGrp">TaskGrp</a></code></h4>
+<ul class="">
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskGrp.deploy" href="#sedna.service.server.knowledgeBase.model.TaskGrp.deploy">deploy</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskGrp.id" href="#sedna.service.server.knowledgeBase.model.TaskGrp.id">id</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskGrp.name" href="#sedna.service.server.knowledgeBase.model.TaskGrp.name">name</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskGrp.sample_num" href="#sedna.service.server.knowledgeBase.model.TaskGrp.sample_num">sample_num</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskGrp.task_num" href="#sedna.service.server.knowledgeBase.model.TaskGrp.task_num">task_num</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sedna.service.server.knowledgeBase.model.TaskModel" href="#sedna.service.server.knowledgeBase.model.TaskModel">TaskModel</a></code></h4>
+<ul class="two-column">
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskModel.created_at" href="#sedna.service.server.knowledgeBase.model.TaskModel.created_at">created_at</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskModel.id" href="#sedna.service.server.knowledgeBase.model.TaskModel.id">id</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskModel.is_current" href="#sedna.service.server.knowledgeBase.model.TaskModel.is_current">is_current</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskModel.model_url" href="#sedna.service.server.knowledgeBase.model.TaskModel.model_url">model_url</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskModel.task" href="#sedna.service.server.knowledgeBase.model.TaskModel.task">task</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskModel.task_id" href="#sedna.service.server.knowledgeBase.model.TaskModel.task_id">task_id</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sedna.service.server.knowledgeBase.model.TaskRelation" href="#sedna.service.server.knowledgeBase.model.TaskRelation">TaskRelation</a></code></h4>
+<ul class="two-column">
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskRelation.grp" href="#sedna.service.server.knowledgeBase.model.TaskRelation.grp">grp</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskRelation.grp_id" href="#sedna.service.server.knowledgeBase.model.TaskRelation.grp_id">grp_id</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskRelation.id" href="#sedna.service.server.knowledgeBase.model.TaskRelation.id">id</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskRelation.task" href="#sedna.service.server.knowledgeBase.model.TaskRelation.task">task</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskRelation.task_id" href="#sedna.service.server.knowledgeBase.model.TaskRelation.task_id">task_id</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskRelation.transfer_radio" href="#sedna.service.server.knowledgeBase.model.TaskRelation.transfer_radio">transfer_radio</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sedna.service.server.knowledgeBase.model.TaskSample" href="#sedna.service.server.knowledgeBase.model.TaskSample">TaskSample</a></code></h4>
+<ul class="">
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskSample.id" href="#sedna.service.server.knowledgeBase.model.TaskSample.id">id</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskSample.sample" href="#sedna.service.server.knowledgeBase.model.TaskSample.sample">sample</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskSample.sample_id" href="#sedna.service.server.knowledgeBase.model.TaskSample.sample_id">sample_id</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskSample.task" href="#sedna.service.server.knowledgeBase.model.TaskSample.task">task</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.TaskSample.task_id" href="#sedna.service.server.knowledgeBase.model.TaskSample.task_id">task_id</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sedna.service.server.knowledgeBase.model.Tasks" href="#sedna.service.server.knowledgeBase.model.Tasks">Tasks</a></code></h4>
+<ul class="">
+<li><code><a title="sedna.service.server.knowledgeBase.model.Tasks.created_at" href="#sedna.service.server.knowledgeBase.model.Tasks.created_at">created_at</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.Tasks.id" href="#sedna.service.server.knowledgeBase.model.Tasks.id">id</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.Tasks.name" href="#sedna.service.server.knowledgeBase.model.Tasks.name">name</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.Tasks.task_attr" href="#sedna.service.server.knowledgeBase.model.Tasks.task_attr">task_attr</a></code></li>
+<li><code><a title="sedna.service.server.knowledgeBase.model.Tasks.updated_at" href="#sedna.service.server.knowledgeBase.model.Tasks.updated_at">updated_at</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
