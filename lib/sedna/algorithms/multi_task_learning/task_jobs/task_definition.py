@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Task attribute extractor and multi-task definition"""
+
 from typing import List, Any, Tuple
 
 import numpy as np

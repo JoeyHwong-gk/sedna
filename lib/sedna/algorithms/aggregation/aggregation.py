@@ -25,6 +25,8 @@ __all__ = ('FedAvg',)
 
 
 class BaseAggregation(metaclass=abc.ABCMeta):
+    """Abstract class of aggregator"""
+
     def __init__(self):
         self.total_size = 0
         self.weights = None
@@ -32,17 +34,25 @@ class BaseAggregation(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def aggregate(self, weights, size=0):
         """
-        Aggregation
-        :param weights: deep learning weight
+        Some algorithms can be aggregated in sequence,
+        but some can be calculated only after all aggregated data is uploaded.
+        therefore, this abstractmethod should consider that all weights are
+        uploaded.
+        :param weights: weights received from node
         :param size: numbers of sample in each loop
+        :return: final weights
         """
 
 
 @ClassFactory.register(ClassType.FL_AGG)
 class FedAvg(BaseAggregation, abc.ABC):
-    """Federated averaging algorithm"""
+    """
+    Federated averaging algorithm : Calculate the average weight
+    according to the number of samples
+    """
 
     def aggregate(self, weights, size=0):
+
         total_sample = self.total_size + size
         if not total_sample:
             return self.weights

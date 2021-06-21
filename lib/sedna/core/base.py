@@ -44,6 +44,12 @@ class JobBase:
 
     @property
     def initial_hem(self):
+        """
+        initial hard_example_mining_algorithms instance
+        env:
+            `HEM_NAME`: string, hard_example_mining_algorithms name
+            `HEM_PARAMETERS`: json_str, parameters of hem
+        """
         hem = self.get_parameters("HEM_NAME")
         hem_parameters = self.get_parameters("HEM_PARAMETERS")
 
@@ -65,15 +71,28 @@ class JobBase:
 
     @property
     def model_path(self):
+        """
+        :return: model save/load path
+        """
         if os.path.isfile(self.config.model_url):
             return self.config.model_url
         return self.get_parameters('model_path') or FileOps.join_path(
             self.config.model_url, self.estimator.model_name)
 
     def train(self, **kwargs):
+        """
+        Generate model from training data and estimator
+        """
         raise NotImplementedError
 
     def inference(self, x=None, post_process=None, **kwargs):
+        """
+        Use the model to predict the result
+        :param x: input_sample
+        :param post_process: post process, string
+        :param kwargs: parameters for inference
+        :return:
+        """
 
         res = self.estimator.predict(x, kwargs=kwargs)
         callback_func = None
@@ -85,6 +104,13 @@ class JobBase:
         return callback_func(res) if callback_func else res
 
     def evaluate(self, data, post_process=None, **kwargs):
+        """
+        Evaluate the model based on test data
+        :param data: eval data sources
+        :param post_process: post process, string
+        :param kwargs: parameters for evaluate
+        :return:
+        """
         callback_func = None
         if callable(post_process):
             callback_func = post_process
@@ -95,9 +121,18 @@ class JobBase:
         return callback_func(res) if callback_func else res
 
     def get_parameters(self, param, default=None):
+        """
+        Get parameters from the environment context
+        :param param: key in env
+        :param default: return if value is None
+        :return:
+        """
         return self.parameters.get_parameters(param=param, default=default)
 
     def report_task_info(self, task_info, status, results, kind="train"):
+        """
+        Send task info to lc client
+        """
         message = {
             "name": self.worker_name,
             "namespace": self.config.namespace,

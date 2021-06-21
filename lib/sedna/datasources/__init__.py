@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Data set format used as input in tasks of sedna"""
 
 from abc import ABC
 
@@ -25,7 +26,13 @@ __all__ = ('BaseDataSource', 'TxtDataParse', 'CSVDataParse')
 
 
 class BaseDataSource:
+    """ sedna dataset base class """
+
     def __init__(self, data_type="train", func=None):
+        """
+        :param data_type: train/eval/test
+        :param func: process function for each sample in raw data
+        """
         self.data_type = data_type  # sample type: train/eval/test
         self.process_func = None
         if callable(func):

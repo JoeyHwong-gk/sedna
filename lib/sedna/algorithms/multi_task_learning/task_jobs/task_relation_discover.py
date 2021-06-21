@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Merge tasks from task_definition"""
 from typing import List
 
 from sedna.common.class_factory import ClassType, ClassFactory

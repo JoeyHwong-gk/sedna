@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Algorithm for obtaining the final prediction results
+based on multi-model inference results"""
+
 from typing import List
 
 import numpy as np
@@ -25,6 +28,12 @@ __all__ = ('DefaultInferenceIntegrate', )
 
 @ClassFactory.register(ClassType.MTL)
 class DefaultInferenceIntegrate:
+    """
+    default algorithm for results integrate
+    make the largest result in each model as the prediction result,
+    generally used for regression prediction
+    """
+
     def __init__(self, models: list, **kwargs):
         self.models = models
 
