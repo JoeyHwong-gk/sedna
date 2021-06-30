@@ -260,7 +260,7 @@ def is_test_data(self):
 </details>
 </dd>
 <dt id="sedna.datasources.BaseDataSource.parse"><code class="name flex">
-<span>def <span class="ident">parse</span></span>(<span>self, *args, **kwargs)</span>
+<span>def <span class="ident">parse</span></span>(<span>self, *urls, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -346,27 +346,10 @@ def is_test_data(self):
 <li><a title="sedna.datasources.BaseDataSource" href="#sedna.datasources.BaseDataSource">BaseDataSource</a></li>
 <li>abc.ABC</li>
 </ul>
-<h3>Static methods</h3>
-<dl>
-<dt id="sedna.datasources.CSVDataParse.parse_json"><code class="name flex">
-<span>def <span class="ident">parse_json</span></span>(<span>lines: dict, **kwargs) ‑> pandas.core.frame.DataFrame</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@staticmethod
-def parse_json(lines: dict, **kwargs) -&gt; pd.DataFrame:
-    return pd.DataFrame.from_dict([lines], **kwargs)</code></pre>
-</details>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="sedna.datasources.CSVDataParse.parse"><code class="name flex">
-<span>def <span class="ident">parse</span></span>(<span>self, *args, **kwargs)</span>
+<span>def <span class="ident">parse</span></span>(<span>self, *urls, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -463,7 +446,7 @@ def parse_json(lines: dict, **kwargs) -&gt; pd.DataFrame:
 <h3>Methods</h3>
 <dl>
 <dt id="sedna.datasources.TxtDataParse.parse"><code class="name flex">
-<span>def <span class="ident">parse</span></span>(<span>self, *args, **kwargs)</span>
+<span>def <span class="ident">parse</span></span>(<span>self, *urls, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>

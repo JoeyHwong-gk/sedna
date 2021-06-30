@@ -34,9 +34,10 @@ class Estimator:
         model.add(Conv2D(64, kernel_size=(3, 3),
                          activation="relu", strides=(2, 2),
                          input_shape=(128, 128, 3)))
-        model.add(MaxPooling2D(pool_size=(2, 2)))
-        model.add(Conv2D(32, kernel_size=(3, 3), activation="relu"))
-        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(MaxPooling2D(pool_size=(2, 2), strides=2, padding="same"))
+        model.add(Conv2D(32, kernel_size=(3, 3), activation="relu",
+                         padding="same"))
+        model.add(MaxPooling2D(pool_size=(2, 2), strides=2, padding="same"))
         model.add(Flatten())
         model.add(Dropout(0.25))
         model.add(Dense(64, activation="relu"))
@@ -44,7 +45,7 @@ class Estimator:
         model.add(Dropout(0.5))
         model.add(Dense(2, activation="softmax"))
 
-        model.compile(loss="categorical_crossentropy",
+        model.compile(loss=keras.losses.binary_crossentropy,
                       optimizer="adam",
                       metrics=["accuracy"])
         return model

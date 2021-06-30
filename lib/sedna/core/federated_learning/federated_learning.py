@@ -80,13 +80,12 @@ class FederatedLearning(JobBase):
         """
 
         callback_func = None
-        if post_process is not None:
+        if post_process:
             callback_func = ClassFactory.get_cls(
                 ClassType.CALLBACK, post_process)
 
         round_number = 0
         num_samples = len(train_data)
-        self.aggregation.total_size += num_samples
 
         while 1:
             round_number += 1
@@ -97,40 +96,38 @@ class FederatedLearning(JobBase):
             res = self.estimator.train(
                 train_data=train_data, valid_data=valid_data, **kwargs)
 
-            self.aggregation.weights = self.estimator.get_weights()
+            current_weights = self.estimator.get_weights()
             send_data = {"num_samples": num_samples,
-                         "weights": self.aggregation.weights}
-            self.node.send(send_data,
-                           msg_type="update_weight",
-                           job_name=self.job_name)
+                         "weights": current_weights}
+            self.node.send(
+                send_data, msg_type="update_weight", job_name=self.job_name
+            )
             received = self.node.recv()
-            exit_flag = False
-            if (received and received["type"] == "update_weight"
+            exit_flag = "continue"
+            total_size = num_samples
+            if (received and received["type"] == "recv_weight"
                     and received["job_name"] == self.job_name):
-                recv = received["data"]
-
-                rec_client = received["client"]
-                rec_sample = recv["num_samples"]
-
+                rec_data = received.get("data", {})
+                exit_flag = rec_data.get("exit_flag", "")
+                round_number = int(rec_data.get("round_number", round_number))
+                total_size = int(rec_data.get("total_sample", total_size))
                 self.log.info(
-                    f"Federated learning get weight from "
-                    f"[{rec_client}] : {rec_sample}")
-                n_weight = self.aggregation.aggregate(
-                    recv["weights"], rec_sample)
+                    f"Federated learning recv weight, "
+                    f"round: {round_number}, total_sample: {total_size}"
+                )
+                n_weight = rec_data.get("weights", current_weights)
                 self.estimator.set_weights(n_weight)
-                exit_flag = received.get("exit_flag", "") == "ok"
-
             task_info = {
                 'currentRound': round_number,
-                'sampleCount': self.aggregation.total_size,
+                'sampleCount': total_size,
                 'startTime': start,
                 'updateTime': time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.localtime())}
+                    "%Y-%m-%d %H:%M:%S", time.localtime())
+            }
             model_paths = self.estimator.save()
             task_info_res = self.estimator.model_info(
                 model_paths, result=res, relpath=self.config.data_path_prefix)
-            if exit_flag:
+            if exit_flag == "ok":
                 self.report_task_info(
                     task_info,
                     K8sResourceKindStatus.COMPLETED.value,

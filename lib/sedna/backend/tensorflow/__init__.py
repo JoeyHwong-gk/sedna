@@ -88,7 +88,7 @@ class TFBackend(BackendBase):
         if not self.has_load:
             tf.reset_default_graph()
             self.sess = self.load()
-        return self.estimator.predict(data=data, **kwargs)
+        return self.estimator.predict(data, **kwargs)
 
     def evaluate(self, data, **kwargs):
         if not self.has_load:
