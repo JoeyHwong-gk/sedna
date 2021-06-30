@@ -204,7 +204,7 @@ python setup.py install --user
 |       `-- __init__.py
 |-- common                     # Contains the common methods, configurations and class factory
 |   |-- __init__.py
-|   |-- class_factory.py       # It defines two importantt classes, ClassType and ClassFactory. You can register the modules which want to be reuse through the decorator.
+|   |-- class_factory.py       # ClassType and ClassFactory. You can register the modules which want to be reuse through the decorator.
 |   |-- config.py              # Globally used configuration information
 |   |-- constant.py            # 
 |   |-- file_ops.py            # File system processing 
@@ -227,7 +227,7 @@ python setup.py install --user
 |       `-- lifelong_learning.py
 |-- datasources                # Abastract Base class of the dataset (train/eval/test)
 |   `-- __init__.py
-`-- service                    # Communication module, include clinet/server
+`-- service                    # Communication module, include client/server
     |-- __init__.py
     |-- client.py              # Send http/ws requests to the server 
     |-- run_kb.py              # Run Knowledgebase Service as rest api

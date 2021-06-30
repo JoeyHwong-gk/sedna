@@ -189,7 +189,7 @@ class IncrementalLearning(JobBase):
 <dd>
 <div class="desc"><p>Incremental learning</p>
 <p>Initial a IncrementalLearning job
-:param estimator: Customize estimator</p></div>
+<br>:param estimator: Customize estimator</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -322,14 +322,14 @@ class IncrementalLearning(JobBase):
 <h3>Methods</h3>
 <dl>
 <dt id="sedna.core.incremental_learning.incremental_learning.IncrementalLearning.evaluate"><code class="name flex">
-<span>def <span class="ident">evaluate</span></span>(<span>self, data, post_process=None, **kwargs)</span>
+<span>def <span class="ident">evaluate</span></span>(<span>self, data, post_process=None, **eval_param)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Evaluate task for IncrementalLearning
-:param data: datasource use for evaluation
-:param post_process: post process
-:param kwargs: params for evaluate of customize estimator
-:return: evaluate metrics</p></div>
+<br>:param data: datasource use for evaluation
+<br>:param post_process: post process
+<br>:param eval_param: params for evaluate of customize estimator
+<br>:return: evaluate metrics</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -379,14 +379,14 @@ class IncrementalLearning(JobBase):
 </details>
 </dd>
 <dt id="sedna.core.incremental_learning.incremental_learning.IncrementalLearning.inference"><code class="name flex">
-<span>def <span class="ident">inference</span></span>(<span>self, data=None, post_process=None, **kwargs)</span>
+<span>def <span class="ident">inference</span></span>(<span>self, data=None, post_process=None, **infer_param)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Inference task for IncrementalLearning
-:param data: inference sample
-:param post_process: post process
-:param kwargs: params for inference of customize estimator
-:return: inference result, result after post_process, if is hard sample</p></div>
+<br>:param data: inference sample
+<br>:param post_process: post process
+<br>:param infer_param: params for inference of customize estimator
+<br>:return: inference result, result after post_process, if is hard sample</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -424,15 +424,15 @@ class IncrementalLearning(JobBase):
 </details>
 </dd>
 <dt id="sedna.core.incremental_learning.incremental_learning.IncrementalLearning.train"><code class="name flex">
-<span>def <span class="ident">train</span></span>(<span>self, train_data, valid_data=None, post_process=None, **kwargs)</span>
+<span>def <span class="ident">train</span></span>(<span>self, train_data, valid_data=None, post_process=None, **train_param)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Training task for IncrementalLearning
-:param train_data: datasource use for train
-:param valid_data: datasource use for evaluation
-:param post_process: post process
-:param kwargs: params for training of customize estimator
-:return: estimator</p></div>
+<br>:param train_data: datasource use for train
+<br>:param valid_data: datasource use for evaluation
+<br>:param post_process: post process
+<br>:param train_param: params for training of customize estimator
+<br>:return: estimator</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>

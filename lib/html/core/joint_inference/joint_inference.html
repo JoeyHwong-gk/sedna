@@ -217,7 +217,7 @@ class JointInference(JobBase):
 <dd>
 <div class="desc"><p>Joint inference</p>
 <p>Initial a JointInference Job
-:param estimator: Customize estimator</p></div>
+<br>:param estimator: Customize estimator</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -314,14 +314,14 @@ class JointInference(JobBase):
 <h3>Methods</h3>
 <dl>
 <dt id="sedna.core.joint_inference.joint_inference.JointInference.inference"><code class="name flex">
-<span>def <span class="ident">inference</span></span>(<span>self, data=None, post_process=None, **kwargs)</span>
+<span>def <span class="ident">inference</span></span>(<span>self, data=None, post_process=None, **infer_param)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Inference task for IncrementalLearning
-:param data: inference sample
-:param post_process: post process
-:param kwargs: params for inference of customize estimator
-:return: if is hard sample, real result,
+<div class="desc"><p>Inference task for joint_inference
+<br>:param data: inference sample
+<br>:param post_process: post process
+<br>:param infer_param: params for inference of customize estimator
+<br>:return: if is hard sample, real result,
 little model result, big model result</p></div>
 <details class="source">
 <summary>
@@ -364,22 +364,6 @@ little model result, big model result</p></div>
     return [is_hard_example, res, edge_result, cloud_result]</code></pre>
 </details>
 </dd>
-<dt id="sedna.core.joint_inference.joint_inference.JointInference.train"><code class="name flex">
-<span>def <span class="ident">train</span></span>(<span>self, train_data, valid_data=None, post_process=None, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>todo: no support yet</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def train(self, train_data,
-          valid_data=None,
-          post_process=None,
-          **kwargs):
-    &#34;&#34;&#34;todo: no support yet&#34;&#34;&#34;</code></pre>
-</details>
-</dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
@@ -396,14 +380,14 @@ little model result, big model result</p></div>
 </ul>
 </dd>
 <dt id="sedna.core.joint_inference.joint_inference.TSBigModelService"><code class="flex name class">
-<span>class <span class="ident">TSBigModelService</span></span>
+<span>class <span class="ident">BigModelService</span></span>
 <span>(</span><span>estimator=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Large model services implemented
 Provides RESTful interfaces for large-model inference.</p>
 <p>Initial a big model service for JointInference
-:param estimator: Customize estimator</p></div>
+<br>:param estimator: Customize estimator</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -475,14 +459,14 @@ Provides RESTful interfaces for large-model inference.</p>
 <h3>Methods</h3>
 <dl>
 <dt id="sedna.core.joint_inference.joint_inference.TSBigModelService.inference"><code class="name flex">
-<span>def <span class="ident">inference</span></span>(<span>self, data=None, post_process=None, **kwargs)</span>
+<span>def <span class="ident">inference</span></span>(<span>self, data=None, post_process=None, **infer_param)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Inference task for IncrementalLearning
-:param data: inference sample
-:param post_process: post process
-:param kwargs: params for inference of big model
-:return: inference result</p></div>
+<div class="desc"><p>Inference task for big_model_inference
+<br>:param data: inference sample
+<br>:param post_process: post process
+<br>:param infer_param: params for inference of big model
+<br>:return: inference result</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>

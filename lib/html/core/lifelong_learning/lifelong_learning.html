@@ -330,20 +330,18 @@ class LifelongLearning(JobBase):
 <dd>
 <div class="desc"><p>Lifelong learning</p>
 <p>Initial a lifelong learning job
-:param estimator: Customize estimator
-:param task_definition: dict, {"method": "", param: ""} Multitask definition base on given traning samples
-:param task_relationship_discovery: dict, {"method": "", param: ""}
+<br>:param estimator: Customize estimator
+<br>:param task_definition: dict, e.g. {"method": "", param: ""}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Multitask definition base on given traning samples
+<br>:param task_relationship_discovery: dict, e.g. {"method": "", param: ""}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Discover the relation of tasks which generated from task_definition
-# noqa
-:param task_mining:
-dict, {"method": "", param: ""} Mining target tasks of inference samples
-:param task_remodeling:
-dict, {"method": "", param: ""} Remodeling tasks
-:param inference_integrate:
-dict, {"method": "", param: ""} Integrating algorithm for the output geted by multitask inference
-# noqa
-:param unseen_task_detect:
-dict, {"method": "", param: ""} unseen task detect</p></div>
+<br>:param task_mining:
+dict, e.g. {"method": "", param: ""}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mining target tasks of inference samples
+<br>:param task_remodeling:
+dict, e.g. {"method": "", param: ""}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Remodeling tasks
+<br>:param inference_integrate:
+dict, e.g. {"method": "", param: ""}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Integrating algorithm for the output geted by multitask inference
+<br>:param unseen_task_detect:
+dict, e.g. {"method": "", param: ""}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; unseen task detect</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -613,14 +611,14 @@ dict, {"method": "", param: ""} unseen task detect</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="sedna.core.lifelong_learning.lifelong_learning.LifelongLearning.evaluate"><code class="name flex">
-<span>def <span class="ident">evaluate</span></span>(<span>self, data, post_process=None, **kwargs)</span>
+<span>def <span class="ident">evaluate</span></span>(<span>self, data, post_process=None, **eval_param)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Evaluate task for LifelongLearning
-:param data: datasource use for evaluation
-:param post_process: post process
-:param kwargs: params for evaluate of customize estimator
-:return: evaluate metrics</p></div>
+<br>:param data: datasource use for evaluation
+<br>:param post_process: post process
+<br>:param eval_param: params for evaluate of customize estimator
+<br>:return: evaluate metrics</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -698,14 +696,14 @@ dict, {"method": "", param: ""} unseen task detect</p></div>
 </details>
 </dd>
 <dt id="sedna.core.lifelong_learning.lifelong_learning.LifelongLearning.inference"><code class="name flex">
-<span>def <span class="ident">inference</span></span>(<span>self, data=None, post_process=None, **kwargs)</span>
+<span>def <span class="ident">inference</span></span>(<span>self, data=None, post_process=None, **infer_param)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Inference task for LifelongLearning
-:param data: inference sample
-:param post_process: post process
-:param kwargs: params for inference of customize estimator
-:return: inference result, if is hard sample, match tasks</p></div>
+<br>:param data: inference sample
+<br>:param post_process: post process
+<br>:param infer_param: params for inference of customize estimator
+<br>:return: inference result, if is hard sample, match tasks</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -748,13 +746,14 @@ dict, {"method": "", param: ""} unseen task detect</p></div>
 </details>
 </dd>
 <dt id="sedna.core.lifelong_learning.lifelong_learning.LifelongLearning.train"><code class="name flex">
-<span>def <span class="ident">train</span></span>(<span>self, train_data, valid_data=None, post_process=None, action='initial', **kwargs)</span>
+<span>def <span class="ident">train</span></span>(<span>self, train_data, valid_data=None, post_process=None, action='initial', **train_param)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>:param train_data: data use to train model
-:param valid_data: data use to valid model
-:param post_process: callback function
-:param action: initial - kb init, update - kb incremental update</p></div>
+<div class="desc">knowledge update by input data<p>
+    <br>:param train_data: data use to train model
+    <br>:param valid_data: data use to valid model
+    <br>:param post_process: callback function
+    <br>:param action: initial - kb init, update - kb incremental update</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -844,25 +843,6 @@ dict, {"method": "", param: ""} unseen task detect</p></div>
     self.log.info(f&#34;Lifelong learning Train task Finished, &#34;
                   f&#34;KB idnex save in {self.config.task_index}&#34;)
     return callback_func(self.estimator, res) if callback_func else res</code></pre>
-</details>
-</dd>
-<dt id="sedna.core.lifelong_learning.lifelong_learning.LifelongLearning.update"><code class="name flex">
-<span>def <span class="ident">update</span></span>(<span>self, train_data, valid_data=None, post_process=None, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def update(self, train_data, valid_data=None, post_process=None, **kwargs):
-    return self.train(
-        train_data=train_data,
-        valid_data=valid_data,
-        post_process=post_process,
-        action=&#34;update&#34;,
-        **kwargs
-    )</code></pre>
 </details>
 </dd>
 </dl>

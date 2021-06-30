@@ -189,8 +189,8 @@ class FederatedLearning(JobBase):
 <dd>
 <div class="desc"><p>Federated learning</p>
 <p>Initial a FederatedLearning job
-:param estimator: Customize estimator
-:param aggregation: aggregation algorithm for FederatedLearning</p></div>
+<br>:param estimator: Customize estimator
+<br>:param aggregation: aggregation algorithm selected for FederatedLearning</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -323,40 +323,16 @@ class FederatedLearning(JobBase):
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="sedna.core.federated_learning.federated_learning.FederatedLearning.register"><code class="name flex">
-<span>def <span class="ident">register</span></span>(<span>self, timeout=300)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def register(self, timeout=300):
-    self.log.info(
-        f&#34;Node {self.worker_name} connect to : {self.config.agg_uri}&#34;)
-    self.node = AggregationClient(
-        url=self.config.agg_uri,
-        client_id=self.worker_name,
-        ping_timeout=timeout
-    )
 
-    FileOps.clean_folder([self.config.model_url], clean=False)
-    self.aggregation = self.aggregation()
-    self.log.info(f&#34;{self.worker_name} model prepared&#34;)
-    if callable(self.estimator):
-        self.estimator = self.estimator()</code></pre>
-</details>
-</dd>
 <dt id="sedna.core.federated_learning.federated_learning.FederatedLearning.train"><code class="name flex">
-<span>def <span class="ident">train</span></span>(<span>self, train_data, valid_data=None, post_process=None, **kwargs)</span>
+<span>def <span class="ident">train</span></span>(<span>self, train_data, valid_data=None, post_process=None, **train_param)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Training task for FederatedLearning
-:param train_data: datasource use for train
-:param valid_data: datasource use for evaluation
-:param post_process: post process
-:param kwargs: params for training of customize estimator</p></div>
+<br>:param train_data: datasource use for train
+<br>:param valid_data: datasource use for evaluation
+<br>:param post_process: post process
+<br>:param train_param: params for training of customize estimator</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>

@@ -159,7 +159,7 @@ class JobBase:
 
     def report_task_info(self, task_info, status, results, kind=&#34;train&#34;):
         &#34;&#34;&#34;
-        Send task info to lc client
+        Send task info to LC client
         &#34;&#34;&#34;
         message = {
             &#34;name&#34;: self.worker_name,
@@ -192,7 +192,12 @@ class JobBase:
 <span>(</span><span>estimator, config=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>sedna feature base class</p></div>
+<div class="desc">
+    <p>Abstract Base class of the features</p>
+    <br>:param config: dict, additional config based on feature requirement
+    <br>:param estimator: Estimator is an instance with the high-level API that greatly simplifies machine learning programming.
+    Estimators encapsulate training, evaluation, prediction, and exporting for your model. Currently we support <code>Sklearn</code>, <code>Keras</code> and customization
+</div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -301,7 +306,7 @@ class JobBase:
 
     def report_task_info(self, task_info, status, results, kind=&#34;train&#34;):
         &#34;&#34;&#34;
-        Send task info to lc client
+        Send task info to LC client
         &#34;&#34;&#34;
         message = {
             &#34;name&#34;: self.worker_name,
@@ -339,8 +344,8 @@ class JobBase:
 <dt id="sedna.core.base.JobBase.initial_hem"><code class="name">var <span class="ident">initial_hem</span></code></dt>
 <dd>
 <div class="desc"><p>initial hard_example_mining_algorithms instance
-env:
-<code>HEM_NAME</code>: string, hard_example_mining_algorithms name
+<br>
+<code>HEM_NAME</code>: string, hard_example_mining_algorithms name<br>
 <code>HEM_PARAMETERS</code>: json_str, parameters of hem</p></div>
 <details class="source">
 <summary>
@@ -396,13 +401,13 @@ def model_path(self):
 <h3>Methods</h3>
 <dl>
 <dt id="sedna.core.base.JobBase.evaluate"><code class="name flex">
-<span>def <span class="ident">evaluate</span></span>(<span>self, data, post_process=None, **kwargs)</span>
+<span>def <span class="ident">evaluate</span></span>(<span>self, data, post_process=None, **eval_param)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Evaluate the model based on test data
-:param data: eval data sources
-:param post_process: post process, string
-:param kwargs: parameters for evaluate
+<br>:param data: eval data sources
+<br>:param post_process: post process, string
+<br>:param eval_param: parameters for evaluate
 :return:</p></div>
 <details class="source">
 <summary>
@@ -431,9 +436,9 @@ def model_path(self):
 </code></dt>
 <dd>
 <div class="desc"><p>Get parameters from the environment context
-:param param: key in env
-:param default: return if value is None
-:return:</p></div>
+<br>:param param: key in env
+<br>:param default: return if value is None
+<br>:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -449,13 +454,13 @@ def model_path(self):
 </details>
 </dd>
 <dt id="sedna.core.base.JobBase.inference"><code class="name flex">
-<span>def <span class="ident">inference</span></span>(<span>self, x=None, post_process=None, **kwargs)</span>
+<span>def <span class="ident">inference</span></span>(<span>self, x=None, post_process=None, **infer_param)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Use the model to predict the result
-:param x: input_sample
-:param post_process: post process, string
-:param kwargs: parameters for inference
+<br>:param x: input_sample
+<br>:param post_process: post process, string
+<br>:param infer_param: parameters for inference
 :return:</p></div>
 <details class="source">
 <summary>
@@ -484,14 +489,14 @@ def model_path(self):
 <span>def <span class="ident">report_task_info</span></span>(<span>self, task_info, status, results, kind='train')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Send task info to lc client</p></div>
+<div class="desc"><p>Send task info to LC client</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def report_task_info(self, task_info, status, results, kind=&#34;train&#34;):
     &#34;&#34;&#34;
-    Send task info to lc client
+    Send task info to LC client
     &#34;&#34;&#34;
     message = {
         &#34;name&#34;: self.worker_name,
@@ -511,7 +516,7 @@ def model_path(self):
 </details>
 </dd>
 <dt id="sedna.core.base.JobBase.train"><code class="name flex">
-<span>def <span class="ident">train</span></span>(<span>self, **kwargs)</span>
+<span>def <span class="ident">train</span></span>(<span>self, **train_param)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generate model from training data and estimator</p></div>

@@ -28,11 +28,43 @@
 <dl>
 <dt><code class="name"><a title="sedna.common.class_factory" href="class_factory.html">sedna.common.class_factory</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc">
+    <p>Provides two instances called ClassType/ClassFactory, Support simple way to define the algorithm</p>
+    <pre><code class="python">
+class ClassType:
+    """Const class saved defined class type."""
+    GENERAL = 'general'
+    HEM = 'hard_example_mining'
+    FL_AGG = 'aggregation'
+    MTL = 'multi_task_learening'
+    UTD = 'unseen_task_detect'
+
+
+@ClassFactory.register(ClassType.HEM, alias="Threshold")
+class ThresholdFilter(BaseFilter, abc.ABC):
+    def __init__(self, threshold=0.5, **kwargs):
+        self.threshold = float(threshold)
+
+    def __call__(self, infer_result=None):
+        # if invalid input, return False
+        if not (infer_result
+                and all(map(lambda x: len(x) > 4, infer_result))):
+            return False
+
+        image_score = 0
+
+        for bbox in infer_result:
+            image_score += bbox[4]
+
+        average_score = image_score / (len(infer_result) or 1)
+return average_score < self.threshold
+    </code></pre>
+</div>
+
 </dd>
 <dt><code class="name"><a title="sedna.common.config" href="config.html">sedna.common.config</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc">base config for sedna</div>
 </dd>
 <dt><code class="name"><a title="sedna.common.constant" href="constant.html">sedna.common.constant</a></code></dt>
 <dd>
@@ -40,15 +72,15 @@
 </dd>
 <dt><code class="name"><a title="sedna.common.file_ops" href="file_ops.html">sedna.common.file_ops</a></code></dt>
 <dd>
-<div class="desc"><p>FileOps class.</p></div>
+<div class="desc"><p>basic file operation function.</p></div>
 </dd>
 <dt><code class="name"><a title="sedna.common.log" href="log.html">sedna.common.log</a></code></dt>
 <dd>
-<div class="desc"><p>Base logger</p></div>
+<div class="desc"><p>base logger</p></div>
 </dd>
 <dt><code class="name"><a title="sedna.common.utils" href="utils.html">sedna.common.utils</a></code></dt>
 <dd>
-<div class="desc"><p>This script contains some common tools.</p></div>
+<div class="desc"><p>common function</p></div>
 </dd>
 </dl>
 </section>
