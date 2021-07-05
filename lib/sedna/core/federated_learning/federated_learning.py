@@ -86,37 +86,41 @@ class FederatedLearning(JobBase):
 
         round_number = 0
         num_samples = len(train_data)
-
+        _flag = True
+        start = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        res = None
         while 1:
-            round_number += 1
-            start = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            self.log.info(
-                f"Federated learning start at {start},"
-                f" round_number={round_number}")
-            res = self.estimator.train(
-                train_data=train_data, valid_data=valid_data, **kwargs)
-
-            current_weights = self.estimator.get_weights()
-            send_data = {"num_samples": num_samples,
-                         "weights": current_weights}
-            self.node.send(
-                send_data, msg_type="update_weight", job_name=self.job_name
-            )
-            received = self.node.recv()
-            exit_flag = "continue"
-            total_size = num_samples
-            if (received and received["type"] == "recv_weight"
-                    and received["job_name"] == self.job_name):
-                rec_data = received.get("data", {})
-                exit_flag = rec_data.get("exit_flag", "")
-                round_number = int(rec_data.get("round_number", round_number))
-                total_size = int(rec_data.get("total_sample", total_size))
+            if _flag:
+                round_number += 1
+                start = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
                 self.log.info(
-                    f"Federated learning recv weight, "
-                    f"round: {round_number}, total_sample: {total_size}"
+                    f"Federated learning start at {start},"
+                    f" round_number={round_number}")
+                res = self.estimator.train(
+                    train_data=train_data, valid_data=valid_data, **kwargs)
+
+                current_weights = self.estimator.get_weights()
+                send_data = {"num_samples": num_samples,
+                             "weights": current_weights}
+                self.node.send(
+                    send_data, msg_type="update_weight", job_name=self.job_name
                 )
-                n_weight = rec_data.get("weights", current_weights)
-                self.estimator.set_weights(n_weight)
+            received = self.node.recv(wait_data_type="recv_weight")
+            if not received:
+                _flag = False
+                continue
+            _flag = True
+
+            rec_data = received.get("data", {})
+            exit_flag = rec_data.get("exit_flag", "")
+            server_round = int(rec_data.get("round_number"))
+            total_size = int(rec_data.get("total_sample"))
+            self.log.info(
+                f"Federated learning recv weight, "
+                f"round: {server_round}, total_sample: {total_size}"
+            )
+            n_weight = rec_data.get("weights")
+            self.estimator.set_weights(n_weight)
             task_info = {
                 'currentRound': round_number,
                 'sampleCount': total_size,

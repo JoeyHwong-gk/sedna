@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import time
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Any
 
 import uuid
 from pydantic import BaseModel
@@ -28,6 +28,7 @@ from starlette.types import ASGIApp, Receive, Scope, Send
 from sedna.common.log import LOGGER
 from sedna.common.utils import get_host_ip
 from sedna.common.class_factory import ClassFactory, ClassType
+from sedna.algorithms.aggregation import AggClient
 
 from .base import BaseServer
 
@@ -38,10 +39,9 @@ class WSClientInfo(BaseModel):  # pylint: disable=too-few-public-methods
     """
     client information
     """
-
     client_id: str
     connected_at: float
-    job_count: int
+    info: Any
 
 
 class WSClientInfoList(BaseModel):  # pylint: disable=too-few-public-methods
@@ -58,6 +58,9 @@ class WSEventMiddleware:  # pylint: disable=too-few-public-methods
             servername = scope["path"].lstrip("/")
             scope[servername] = self._server
         await self._app(scope, receive, send)
+        # exit agg server if job complete
+        scope["app"].shutdown = (self._server.exit_check()
+                                 and self._server.empty)
 
 
 class WSServerBase:
@@ -85,7 +88,7 @@ class WSServerBase:
         LOGGER.info(f"Adding client {client_id}")
         self._clients[client_id] = websocket
         self._client_meta[client_id] = WSClientInfo(
-            client_id=client_id, connected_at=time.time(), job_count=0
+            client_id=client_id, connected_at=time.time(), info=None
         )
 
     async def kick_client(self, client_id: str):
@@ -126,44 +129,40 @@ class Aggregator(WSServerBase):
             self.aggregation = self.aggregation()
         self.participants_count = int(kwargs.get("participants_count", "1"))
         self.current_round = 0
-        self.job_wait = True
 
     async def send_message(self, client_id: str, msg: Dict):
-        clients = list(self._clients.items())
         data = msg.get("data")
         if data and msg.get("type", "") == "update_weight":
-
+            info = AggClient()
+            info.num_samples = int(data["num_samples"])
+            info.weights = data["weights"]
+            self._client_meta[client_id].info = info
+            current_clinets = [
+                x.info for x in self._client_meta.values() if x.info
+            ]
             # exit while aggregation job is NOT start
-            if self.job_wait and len(clients) < self.participants_count:
-                return
-            self.job_wait = False
-            num_samples = int(data["num_samples"])
-            self._client_meta[client_id].job_count = num_samples
-            total_sample = sum([x.job_count for x in
-                                self._client_meta.values()])
-            if total_sample == num_samples:
+            if len(current_clinets) < self.participants_count:
                 return
             self.current_round += 1
-
-            self.aggregation.total_size = total_sample
-            weights = self.aggregation.aggregate(
-                data["weights"], num_samples
-            )
+            weights = self.aggregation.aggregate(current_clinets)
             exit_flag = "ok" if self.exit_check() else "continue"
 
             msg["type"] = "recv_weight"
             msg["round_number"] = self.current_round
             msg["data"] = {
-                "total_sample": total_sample,
+                "total_sample": self.aggregation.total_size,
                 "round_number": self.current_round,
-                "weight": weights,
+                "weights": weights,
                 "exit_flag": exit_flag
             }
-        for to_client, websocket in clients:
+        for to_client, websocket in self._clients.items():
             try:
                 await websocket.send_json(msg)
             except Exception as err:
                 LOGGER.error(err)
+            else:
+                if msg["type"] == "recv_weight":
+                    self._client_meta[to_client].info = None
 
     def exit_check(self):
         return self.current_round >= self.exit_round
@@ -241,6 +240,7 @@ class AggregationServer(BaseServer):
                 )
             ],
         )
+        self.app.shutdown = False
 
     def start(self):
         """

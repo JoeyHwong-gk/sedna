@@ -16,12 +16,19 @@
 
 import abc
 from copy import deepcopy
+from typing import List
 
 import numpy as np
 
 from sedna.common.class_factory import ClassFactory, ClassType
 
-__all__ = ('FedAvg',)
+__all__ = ('AggClient', 'FedAvg',)
+
+
+class AggClient:
+    """Aggregation clients"""
+    num_samples: int
+    weights: List
 
 
 class BaseAggregation(metaclass=abc.ABCMeta):
@@ -32,14 +39,13 @@ class BaseAggregation(metaclass=abc.ABCMeta):
         self.weights = None
 
     @abc.abstractmethod
-    def aggregate(self, weights, size=0):
+    def aggregate(self, clients: List[AggClient]):
         """
         Some algorithms can be aggregated in sequence,
         but some can be calculated only after all aggregated data is uploaded.
         therefore, this abstractmethod should consider that all weights are
         uploaded.
-        :param weights: weights received from node
-        :param size: numbers of sample in each loop
+        :param clients: All clients in federated learning job
         :return: final weights
         """
 
@@ -51,18 +57,17 @@ class FedAvg(BaseAggregation, abc.ABC):
     according to the number of samples
     """
 
-    def aggregate(self, weights, size=0):
-        total_sample = self.total_size + size
-        if not total_sample:
-            return weights
-        if not self.weights:
-            updates = weights
-        else:
-            updates = []
-            for inx, weight in enumerate(weights):
-                old_weight = np.array(self.weights[inx])
-                row_weight = ((np.array(weight) - old_weight) *
-                              (size / total_sample) + old_weight)
-                updates.append(row_weight.tolist())
+    def aggregate(self, clients: List[AggClient]):
+        if not len(clients):
+            return self.weights
+        self.total_size = sum([c.num_samples for c in clients])
+        old_weight = [np.zeros(np.array(c).shape) for c in
+                      next(iter(clients)).weights]
+        updates = []
+        for inx, row in enumerate(old_weight):
+            for c in clients:
+                row += (np.array(c.weights[inx]) * c.num_samples
+                        / self.total_size)
+            updates.append(row.tolist())
         self.weights = deepcopy(updates)
         return updates
