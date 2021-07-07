@@ -44,6 +44,10 @@ def main():
     ll_job = LifelongLearning(
         estimator=Estimator,
         task_mining=task_mining,
+        task_definition=None,
+        task_relationship_discovery=None,
+        task_remodeling=None,
+        inference_integrate=None,
         unseen_task_detect=unseen_task_detect)
 
     infer_dataset_url = Context.get_parameters('infer_dataset_url')

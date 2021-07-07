@@ -39,7 +39,12 @@ def main():
 
     ll_job = LifelongLearning(
         estimator=Estimator,
-        task_definition=task_definition
+        task_definition=task_definition,
+        task_relationship_discovery=None,
+        task_mining=None,
+        task_remodeling=None,
+        inference_integrate=None,
+        unseen_task_detect=None
     )
     train_experiment = ll_job.train(
         train_data=train_data,
