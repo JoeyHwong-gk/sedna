@@ -14,10 +14,12 @@
 
 import json
 import joblib
+import pandas as pd
 
 from sedna.datasources import BaseDataSource
 from sedna.backend import set_backend
 from sedna.common.log import LOGGER
+from sedna.common.file_ops import FileOps
 from sedna.common.config import Context
 from sedna.common.constant import KBResourceConstant
 from sedna.common.class_factory import ClassFactory, ClassType
@@ -148,14 +150,11 @@ class MulTaskLearning:
 
     def train(self, train_data: BaseDataSource,
               valid_data: BaseDataSource = None,
-              post_process=None, **kwargs):
+              **kwargs):
         tasks, task_extractor, train_data = self._task_definition(train_data)
         self.extractor = task_extractor
         task_groups = self._task_relationship_discovery(tasks)
         self.models = []
-        callback = None
-        if post_process:
-            callback = ClassFactory.get_cls(ClassType.CALLBACK, post_process)()
         self.task_groups = []
         feedback = {}
         rare_task = []
@@ -175,18 +174,29 @@ class MulTaskLearning:
                 continue
             LOGGER.info(f"MTL Train start {i} : {task.entry}")
 
-            model_obj = set_backend(estimator=self.base_model)
-            res = model_obj.train(train_data=task.samples, **kwargs)
-            if callback:
-                res = callback(model_obj, res)
-            model_path = model_obj.save(model_name=f"{task.entry}.model")
-            model = Model(index=i, entry=task.entry,
-                          model=model_path, result=res)
-            model.meta_attr = [t.meta_attr for t in task.tasks]
+            model = None
+            for t in task.tasks:  # if model has train in tasks
+                if not (t.model and t.result):
+                    continue
+                model_path = t.model.save(model_name=f"{t.entry}.model")
+                t.model = model_path
+                model = Model(index=i, entry=t.entry,
+                              model=model_path, result=t.result)
+                model.meta_attr = t.meta_attr
+                break
+            if not model:
+                model_obj = set_backend(estimator=self.base_model)
+                res = model_obj.train(train_data=task.samples, **kwargs)
+                model_path = model_obj.save(model_name=f"{task.entry}.model")
+                model = Model(index=i, entry=task.entry,
+                              model=model_path, result=res)
+
+                model.meta_attr = [t.meta_attr for t in task.tasks]
             task.model = model
             self.models.append(model)
-            feedback[task.entry] = res
+            feedback[task.entry] = model.result
             self.task_groups.append(task)
+
         if len(rare_task):
             model_obj = set_backend(estimator=self.base_model)
             res = model_obj.train(train_data=train_data, **kwargs)
@@ -211,20 +221,31 @@ class MulTaskLearning:
             "extractor": self.extractor,
             "task_groups": self.task_groups
         }
-        joblib.dump(task_index, self.task_index_url)
         if valid_data:
-            feedback = self.evaluate(valid_data, **kwargs)
+            feedback, _ = self.evaluate(valid_data, **kwargs)
+        try:
+            joblib.dump(task_index, self.task_index_url)
+        except TypeError:
+            return feedback, task_index
+        return feedback, self.task_index_url
 
-        return feedback
+    def load(self, task_index_url=None):
+        if task_index_url:
+            self.task_index_url = FileOps.download(task_index_url,
+                                                   self.task_index_url)
+        assert FileOps.exists(self.task_index_url), FileExistsError(
+            f"Task index miss: {self.task_index_url}"
+        )
+        task_index = joblib.load(self.task_index_url)
+        self.extractor = task_index['extractor']
+        self.task_groups = task_index['task_groups']
+        self.models = [task.model for task in self.task_groups]
 
     def predict(self, data: BaseDataSource,
                 post_process=None, **kwargs):
 
         if not (self.models and self.extractor):
-            task_index = joblib.load(self.task_index_url)
-            self.extractor = task_index['extractor']
-            self.task_groups = task_index['task_groups']
-            self.models = [task.model for task in self.task_groups]
+            self.load()
 
         data, mappings = self._task_mining(samples=data)
         samples, models = self._task_remodeling(samples=data,
@@ -242,7 +263,7 @@ class MulTaskLearning:
             model_obj = set_backend(estimator=self.base_model)
             evaluator = model_obj.load(m.model) if isinstance(
                 m.model, str) else m.model
-            pred = evaluator.predict(df.x, kwargs=kwargs)
+            pred = evaluator.predict(df.x, **kwargs)
             if callable(callback):
                 pred = callback(pred, df)
             task = Task(entry=m.entry, samples=df)
@@ -291,8 +312,9 @@ class MulTaskLearning:
             }
             metrics_param = {"average": "micro"}
 
-        data.x['pred_y'] = result
-        data.x['real_y'] = data.y
+        if isinstance(data.x, pd.DataFrame):
+            data.x['pred_y'] = result
+            data.x['real_y'] = data.y
         if not metrics_param:
             metrics_param = {}
         elif isinstance(metrics_param, str):
