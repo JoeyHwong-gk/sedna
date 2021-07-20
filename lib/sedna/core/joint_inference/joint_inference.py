@@ -166,9 +166,9 @@ class JointInference(JobBase):
         if self.hard_example_mining_algorithm:
             is_hard_example = self.hard_example_mining_algorithm(res)
             if is_hard_example:
-                cloud_data = self.cloud.inference(
-                    data.tolist(), post_process=post_process, **kwargs)
                 try:
+                    cloud_data = self.cloud.inference(
+                        data.tolist(), post_process=post_process, **kwargs)
                     cloud_result = cloud_data["result"]
                 except Exception as err:
                     self.log.error(f"get cloud result error: {err}")
