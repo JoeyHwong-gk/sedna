@@ -14,6 +14,7 @@
 
 import os
 
+import numpy as np
 import tensorflow as tf
 
 from sedna.backend.base import BackendBase
@@ -38,8 +39,9 @@ class TFBackend(BackendBase):
         super(TFBackend, self).__init__(
             estimator=estimator, fine_tune=fine_tune, **kwargs)
         self.framework = "tensorflow"
-        sess_config = self._init_gpu_session_config(
-        ) if self.use_cuda else self._init_cpu_session_config()
+
+        sess_config = (self._init_gpu_session_config()
+                       if self.use_cuda else self._init_cpu_session_config())
         self.graph = tf.Graph()
 
         with self.graph.as_default():
@@ -142,4 +144,5 @@ class KerasBackend(TFBackend):
         return list(map(lambda x: x.tolist(), self.estimator.get_weights()))
 
     def set_weights(self, weights):
+        weights = [np.array(x) for x in weights]
         self.estimator.set_weights(weights)
