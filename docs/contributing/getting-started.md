@@ -51,10 +51,13 @@ Also -- Please reach out in general for bugs, feature requests, and other issues
 
 - If you're planning to contribute code changes, you'll want to read the [development preparation guide] next.
 
+- If you're planning to add a new synergy feature directly, you'll want to read the [guide][add-feature-guide] next.
+
 When done, before submitting a pull request, you can also refer [kubernetes pull request guide] for the best practices.
 
 [proposals]: /docs/proposals
 [development preparation guide]: ./prepare-environment.md
+[add-feature-guide]: control-plane/add-a-new-synergy-feature.md
 
 [issues]: https://github.com/kubeedge/sedna/issues
 [file-an-issue]: https://github.com/kubeedge/sedna/issues/new/choose

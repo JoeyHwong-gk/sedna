@@ -31,6 +31,7 @@ EOF
 ```
 
 2\. compile and run GM directly:
+
 If you have already run Sedna by following the [install doc],
 you need to stop GM by `kubectl -n sedna scale --replicas=0 gm` before,
 and reconfig `GM_ADDRESS` of LC by `kubectl -n sedna edit daemonset lc`.
