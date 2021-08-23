@@ -16,6 +16,7 @@
 
 import socket
 from functools import wraps
+from inspect import getfullargspec
 
 
 def get_host_ip():
@@ -69,3 +70,22 @@ def model_layer_reshape(flatten_weights, shapes):
     for idx, flatten_layer in enumerate(flatten_weights):
         shaped_model.append(flatten_layer.reshape(shapes[idx]))
     return shaped_model
+
+
+def get_func_spec(func, **kwargs):
+    """
+
+    :param func:
+    :param kwargs:
+    :return:
+    """
+
+    if not callable(func):
+        return kwargs
+
+    need_kw = getfullargspec(func)
+    if need_kw.varkw == 'kwargs':
+        return kwargs
+
+    return {k: v for k, v in kwargs.items() if k in need_kw.args}
+

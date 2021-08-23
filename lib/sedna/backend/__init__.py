@@ -20,7 +20,7 @@ import warnings
 from sedna.common.config import BaseConfig
 
 
-def set_backend(estimator=None, config=None):
+def set_backend(estimator=None, config=None, **kwargs):
     """Create Trainer clss."""
     if estimator is None:
         return
@@ -41,12 +41,17 @@ def set_backend(estimator=None, config=None):
         os.environ['DEVICE_CATEGORY'] = device_category
 
     if backend_type == "TENSORFLOW":
-        from sedna.backend.tensorflow import TFBackend as REGISTER
+        from sedna.backend.tensorflow.tensorflow import TFBackend as REGISTER
     elif backend_type == "KERAS":
-        from sedna.backend.tensorflow import KerasBackend as REGISTER
+        from sedna.backend.tensorflow.keras import KerasBackend as REGISTER
+    elif backend_type == "SKLEARN":
+        from sedna.backend.scikitlearn.scikitlearn import SklearnBackend as REGISTER
+    elif backend_type == "TORCH":
+        from sedna.backend.torch.pytorch import TorchBackend as REGISTER
     else:
         warnings.warn(f"{backend_type} Not Support yet, use itself")
-        from sedna.backend.base import BackendBase as REGISTER
+        from sedna.backend.customize.customize import CustomizeBackend as REGISTER
+        
     model_save_url = config.get("model_url")
     base_model_save = config.get("base_model_url") or model_save_url
     model_save_name = config.get("model_name")
@@ -54,5 +59,6 @@ def set_backend(estimator=None, config=None):
         estimator=estimator, use_cuda=use_cuda,
         model_save_path=base_model_save,
         model_name=model_save_name,
-        model_save_url=model_save_url
+        model_save_url=model_save_url,
+        **kwargs
     )
