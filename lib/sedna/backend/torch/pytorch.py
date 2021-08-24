@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 import copy
 
+import torch
 from sedna.common.utils import get_func_spec
 from sedna.common.file_ops import FileOps
 
@@ -23,46 +23,50 @@ from ..base import BackendBase
 
 class TorchBackend(BackendBase):
 
-	def __init__(self, estimator, **kwargs):
-		super().__init__(estimator=estimator, **kwargs)
+    def __init__(self, estimator, **kwargs):
+        super().__init__(estimator=estimator, **kwargs)
+        self.framework = "torch"
+        self.model_suffix = ".pth"
 
-	def train(self, train_data, valid_data=None, **kwargs):
-		hyperparams = get_func_spec(self.estimator.fit, **kwargs)
-		x, y = train_data.x, train_data.y
-		self.estimator.set_params(**hyperparams)
-		self.estimator.fit_loop(x, y)
+    def train(self, train_data, valid_data=None, **kwargs):
+        hyperparams = get_func_spec(self.estimator.fit, **kwargs)
+        x, y = train_data.x, train_data.y
+        self.estimator.set_params(**hyperparams)
+        self.estimator.fit_loop(x, y)
 
-	def evaluate(self, valid_data, **kwargs):
-		pass
+    def _predict(self, data, **kwargs):
+        hyperparams = get_func_spec(self.estimator.predict, **kwargs)
+        return self.estimator.predict(data, **hyperparams)
 
-	def predict(self, data, **kwargs):
-		return self.estimator.predict(data)
+    def save(self, model_url="", model_name=None, optimizer=None, history=None):
+        model_url = self.get_model_absolute_path(
+            model_url=model_url, model_name=model_name
+        )
+        self.estimator.save_params(
+            f_params=model_url, f_optimizer=optimizer, f_history=history)
 
-	def save(self, model_url="", model_name=None):
-		if model_name is None:
-			file = self.default_name if self.default_name else self.framework
-			model_name = f"{file}.pt"
+    def load(self, model_url="", optimizer=None, history=None, **kwargs):
+        if not model_url:
+            model_url = self.get_model_absolute_path(
+                model_url=model_url,
+                model_name=kwargs.get("model_name", None)
+            )
+        if FileOps.exists(model_url):
+            model_url = FileOps.download(model_url)
+        self.estimator.load_params(f_params=model_url,
+                                   f_optimizer=optimizer, f_history=history)
+        self.has_load = True
 
-		full_path = FileOps.join_path(model_url, model_name)
-		f_optimizer = None
-		f_history = None
-		# if optimizer_filename is not None:
-		# 	f_optimizer = super().get_model_absolute_path(optimizer_filename)
-		# if history_filename is not None:
-		# 	f_history = super().get_model_absolute_path(history_filename)
-		self.estimator.save_params(
-			f_params=full_path, f_optimizer=f_optimizer, f_history=f_history)
+    def get_weights(self):
+        if self.use_cuda:
+            module = copy.deepcopy(self.estimator.module_).cpu()
+        else:
+            module = self.estimator.module_
+        return list(module.parameters())
 
-	def load(self, model_url="", model_name=None, **kwargs):
-		pass
-
-	def get_weights(self):
-		if self.use_cuda:
-			module = copy.deepcopy(self.estimator.module_).cpu()
-
-		else:
-			module = self.estimator.module_
-		return list(module.parameters())
-
-	def set_weights(self, weights):
-		pass
+    def set_weights(self, weights):
+        for p1, p2 in zip(self.get_weights(), weights):
+            p1.data = torch.from_numpy(p2)
+            p1.data.requires_grad = True
+        if self.use_cuda:
+            self.estimator.module_.to(self.estimator.device)

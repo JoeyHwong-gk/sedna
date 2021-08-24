@@ -13,29 +13,44 @@
 # limitations under the License.
 
 
-import joblib
+import os
 
 from sedna.common.utils import get_func_spec
+from sedna.common.file_ops import FileOps
 
 from ..base import BackendBase
 
 
 class SklearnBackend(BackendBase):
 
-	def __init__(self, estimator, **kwargs):
-		super().__init__(estimator=estimator, **kwargs)
+    def __init__(self, estimator, **kwargs):
+        super().__init__(estimator=estimator, **kwargs)
+        self.framework = "scikit-learn"
+        self.model_suffix = ".joblib"
 
-	def train(self, train_data, valid_data=None, **kwargs):
-		pass
+    def train(self, train_data, valid_data=None, **kwargs):
+        if valid_data:
+            x1, y1 = valid_data.x, valid_data.y
+            kwargs["eval_set"] = [(x1, y1), ]
+        hyperparams = get_func_spec(self.estimator.fit, **kwargs)
+        x, y = train_data.x, train_data.y
+        self.result = self.estimator.fit(x, y, **hyperparams)
+        self.has_load = True
 
-	def evaluate(self, valid_data, **kwargs):
-		pass
+    def _predict(self, data, **kwargs):
+        hyperparams = get_func_spec(self.estimator.predict, **kwargs)
+        return self.estimator.predict(data, **hyperparams)
 
-	def predict(self, data, **kwargs):
-		pass
+    def save(self, model_url="", model_name=None):
+        model_url = self.get_model_absolute_path(
+            model_url=model_url, model_name=model_name
+        )
+        return FileOps.dump(self.estimator, model_url)
 
-	def save(self, model_url="", model_name=None):
-		pass
-
-	def load(self, model_url="", model_name=None, **kwargs):
-		pass
+    def load(self, model_url="", **kwargs):
+        if not model_url:
+            model_url = self.get_model_absolute_path(
+                model_url=model_url,
+                model_name=kwargs.get("model_name", None)
+            )
+        self.estimator = FileOps.load(model_url)

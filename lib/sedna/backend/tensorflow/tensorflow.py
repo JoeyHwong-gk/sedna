@@ -28,12 +28,20 @@ if hasattr(tf, "compat"):
     Session = tf.compat.v1.Session
     reset_default_graph = tf.compat.v1.reset_default_graph
     get_default_graph = tf.compat.v1.get_default_graph
+    Saver = tf.compat.v1.train.Saver
+    GFile = tf.io.gfile.GFile
+    writeGraph = tf.io.write_graph
+    GraphDef = tf.compat.v1.GraphDef
 else:
     # version 1
     ConfigProto = tf.ConfigProto
     Session = tf.Session
     reset_default_graph = tf.reset_default_graph
     get_default_graph = tf.get_default_graph
+    Saver = tf.train.Saver
+    GFile = tf.gfile.GFile
+    writeGraph = tf.train.write_graph
+    GraphDef = tf.GraphDef
 
 
 class TFBackend(BackendBase):
@@ -57,7 +65,7 @@ class TFBackend(BackendBase):
     def __init__(self, estimator, **kwargs):
         super().__init__(estimator, **kwargs)
         self.framework = "tensorflow"
-
+        self.model_suffix = ".pb"
         sess_config = (self._init_gpu_session_config()
                        if self.use_cuda else self._init_cpu_session_config())
         self.graph = get_default_graph()
@@ -67,25 +75,65 @@ class TFBackend(BackendBase):
 
     def train(self, train_data, valid_data=None, **kwargs):
         hyperparams = get_func_spec(self.estimator.train, **kwargs)
+        self.has_load = True
         return self.estimator.train(
             train_data=train_data,
             valid_data=valid_data,
             **hyperparams
         )
 
-    def predict(self, data, **kwargs):
+    def _predict(self, data, **kwargs):
         hyperparams = get_func_spec(self.estimator.predict, **kwargs)
         return self.estimator.predict(data=data, **hyperparams)
 
     def evaluate(self, valid_data, **kwargs):
+        if not self.has_load:
+            self.load(**kwargs)
         hyperparams = get_func_spec(self.estimator.evaluate, **kwargs)
         return self.estimator.evaluate(valid_data=valid_data, **hyperparams)
 
     def save(self, model_url="", model_name=None):
-        pass
+        model_url = self.get_model_absolute_path(
+            model_url=model_url, model_name=model_name
+        )
 
-    def load(self, model_url="", model_name=None, **kwargs):
-        pass
+        if model_url.endswith(".pb"):
+            model_url, model_name = os.path.split(model_url)
+            tmp_url = "./" if FileOps.is_remote(model_url) else model_url
+            FileOps.clean_folder([tmp_url], clean=False)
+            writeGraph(self.sess.graph, tmp_url, model_name, False)
+            FileOps.upload(
+                FileOps.join_path(tmp_url, model_name),
+                FileOps.join_path(model_url, model_name)
+            )
+        else:
+            saver = Saver()
+            tmp_url = "./" if FileOps.is_remote(model_url) else model_url
+            FileOps.clean_folder([tmp_url], clean=False)
+            saver.save(self.sess, tmp_url)
+            FileOps.upload(tmp_url, model_url)
+        return model_url
+
+    def load(self, model_url="", **kwargs):
+        reset_default_graph()
+        if not model_url:
+            model_url = self.get_model_absolute_path(
+                model_url=model_url,
+                model_name=kwargs.get("model_name", None)
+            )
+        if FileOps.exists(model_url):
+            model_url = FileOps.download(model_url)
+        if os.path.isfile(model_url) and model_url.endswith(".pb"):
+            with self.graph.as_default():
+                with GFile(model_url, "rb") as handle:
+                    graph_def = GraphDef()
+                    graph_def.ParseFromString(handle.read())
+                    tf.import_graph_def(graph_def, name='')
+        else:
+            saver = Saver()
+            latest_ckpt = tf.train.latest_checkpoint(model_url)
+            saver.restore(self.sess, latest_ckpt)
+        self.has_load = True
 
     @staticmethod
     def _init_cpu_session_config():

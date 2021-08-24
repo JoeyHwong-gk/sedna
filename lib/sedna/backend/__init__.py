@@ -15,9 +15,9 @@
 """Framework Backend class."""
 
 import os
-import warnings
 
 from sedna.common.config import BaseConfig
+from sedna.common.constant import MLFramework
 
 
 def set_backend(estimator=None, config=None, **kwargs):
@@ -30,7 +30,7 @@ def set_backend(estimator=None, config=None, **kwargs):
     backend_type = os.getenv(
         'BACKEND_TYPE', config.get("backend_type", "UNKNOWN")
     )
-    backend_type = str(backend_type).upper()
+    backend_type = str(backend_type).lower()
     device_category = os.getenv(
         'DEVICE_CATEGORY', config.get("device_category", "CPU")
     )
@@ -40,24 +40,26 @@ def set_backend(estimator=None, config=None, **kwargs):
     else:
         os.environ['DEVICE_CATEGORY'] = device_category
 
-    if backend_type == "TENSORFLOW":
+    expect_attr_list = (
+        "train", "predict", "load"
+    )
+    if all(map(lambda x: hasattr(estimator, x), expect_attr_list)):
+        backend_type = "customize"
+    if backend_type == MLFramework.TENSORFLOW.value:
         from sedna.backend.tensorflow.tensorflow import TFBackend as REGISTER
-    elif backend_type == "KERAS":
+    elif backend_type == MLFramework.KERAS.value:
         from sedna.backend.tensorflow.keras import KerasBackend as REGISTER
-    elif backend_type == "SKLEARN":
-        from sedna.backend.scikitlearn.scikitlearn import SklearnBackend as REGISTER
-    elif backend_type == "TORCH":
-        from sedna.backend.torch.pytorch import TorchBackend as REGISTER
+    elif backend_type == MLFramework.SKLEARN.value:
+        from sedna.backend.scikitlearn import SklearnBackend as REGISTER
+    elif backend_type == MLFramework.TORCH.value:
+        from sedna.backend.torch import TorchBackend as REGISTER
     else:
-        warnings.warn(f"{backend_type} Not Support yet, use itself")
-        from sedna.backend.customize.customize import CustomizeBackend as REGISTER
+        from sedna.backend.customize import CustomizeBackend as REGISTER
         
     model_save_url = config.get("model_url")
-    base_model_save = config.get("base_model_url") or model_save_url
     model_save_name = config.get("model_name")
     return REGISTER(
         estimator=estimator, use_cuda=use_cuda,
-        model_save_path=base_model_save,
         model_name=model_save_name,
         model_save_url=model_save_url,
         **kwargs

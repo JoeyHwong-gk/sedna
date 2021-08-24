@@ -33,3 +33,10 @@ class KBResourceConstant(Enum):
     MIN_TRAIN_SAMPLE = 10
     KB_INDEX_NAME = "index.pkl"
     TASK_EXTRACTOR_NAME = "task_attr_extractor.pkl"
+
+
+class MLFramework(Enum):
+    TENSORFLOW = "tensorflow"
+    TORCH = "torch"
+    KERAS = "keras"
+    SKLEARN = "sklearn"
