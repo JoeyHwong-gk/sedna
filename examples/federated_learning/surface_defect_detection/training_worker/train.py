@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from lib.sedna import datasources
 import os
 
 import numpy as np
@@ -74,6 +75,7 @@ def main():
         learning_rate=learning_rate,
         validation_split=validation_split
     )
+    
     return train_jobs
 
 
