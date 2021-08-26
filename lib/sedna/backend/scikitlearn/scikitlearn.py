@@ -53,4 +53,10 @@ class SklearnBackend(BackendBase):
                 model_url=model_url,
                 model_name=kwargs.get("model_name", None)
             )
-        self.estimator = FileOps.load(model_url)
+        model_url = FileOps.download(model_url)
+        kwargs["model_url"] = model_url
+        if hasattr(self.estimator, "load"):
+            varkw = get_func_spec(self.estimator.load, **kwargs)
+            self.estimator.load(**varkw)
+        else:
+            self.estimator = FileOps.load(model_url)

@@ -15,6 +15,8 @@
 import os
 import abc
 
+import numpy as np
+
 from sedna.common.file_ops import FileOps
 from sedna.common.utils import get_func_spec
 from sedna.datasources import BaseDataSource
@@ -36,18 +38,20 @@ class BackendBase(abc.ABC):
         self.estimator = estimator
         self.use_cuda = use_cuda
         self.model_save_url = model_save_url
-        self.default_name = model_name
+        self.model_name = model_name
         self.has_load = False
         self.initial_param = kwargs
         self.result = None
         self.result_transform = kwargs.get("transform", None)
-        if callable(self.estimator):
+        if isinstance(self.estimator, type):
             varkw = get_func_spec(self.estimator, **kwargs)
             self.estimator = self.estimator(**varkw)
 
     def get_model_absolute_path(self, model_url="", model_name=""):
+        if getattr(self.estimator, "model_url", ""):
+            return self.estimator.model_url
         if not model_name:
-            file = self.default_name or f"{self.framework}_model"
+            file = self.model_name or f"{self.framework}_model"
             model_name = f'{file}{self.model_suffix}'
         if not model_url:
             model_url = self.model_save_url
@@ -97,13 +101,13 @@ class BackendBase(abc.ABC):
         """
         if not self.has_load:
             self.load(**kwargs)
-        pred = self.predict(data, **kwargs)
+        pred = self._predict(data, **kwargs)
         if callable(self.result_transform):
             varkw = get_func_spec(self.result_transform, **kwargs)
             pred = self.result_transform(pred, **varkw)
         return pred
 
-    def evaluate(self, valid_data, with_result=False,
+    def evaluate(self, data, with_result=False,
                  metric_func=None, **kwargs):
         """
         Evaluates model given the test dataset.
@@ -111,7 +115,7 @@ class BackendBase(abc.ABC):
 
         Parameters
         ----------
-        valid_data:  BaseDataSource
+        data:  BaseDataSource
             datasource use for evaluation, see
             `sedna.datasources.BaseDataSource` for more detail.
         with_result: bool
@@ -123,11 +127,11 @@ class BackendBase(abc.ABC):
 
         if not self.has_load:
             self.load(**kwargs)
-        x, y = valid_data.x, valid_data.y
         metrics = dict()
         if hasattr(self.estimator, "evaluate"):
             hyperparams = get_func_spec(self.estimator.evaluate, **kwargs)
-            metrics = self.estimator.evaluate(x, y, **hyperparams)
+            metrics = self.estimator.evaluate(data, **hyperparams)
+        x, y = data.x, data.y
         if not metrics or with_result:
             pred = self.predict(x, **kwargs)
             metrics["_pred"] = pred
@@ -171,15 +175,25 @@ class BackendBase(abc.ABC):
         """
         raise NotImplementedError
 
-    @abc.abstractmethod
-    def set_weights(self, weights):
+    def set_weights(self, weights=None, **kwargs):
         """Set weight with memory tensor."""
-        raise NotImplementedError
+        if hasattr(weights, '__iter__'):
+            weights = [np.array(x) for x in weights]
+        kwargs["weights"] = weights
+        if hasattr(self.estimator, "set_weights"):
+            varkw = get_func_spec(self.estimator.set_weights, **kwargs)
+            return self.estimator.set_weights(**varkw)
+        raise NotImplementedError("`Estimator` must provide own `set_weights`")
 
-    @abc.abstractmethod
-    def get_weights(self):
+    def get_weights(self, **kwargs):
         """Get the weights."""
-        raise NotImplementedError
+        if hasattr(self.estimator, "get_weights"):
+            varkw = get_func_spec(self.estimator.get_weights, **kwargs)
+            weights = self.estimator.get_weights(**varkw)
+            if hasattr(weights, '__iter__'):
+                return list(map(lambda x: np.array(x).tolist(), weights))
+            return weights
+        raise NotImplementedError("`Estimator` must provide own `get_weights`")
 
     def model_info(self, model, relpath=None, result=None):
         _, _type = os.path.splitext(model)

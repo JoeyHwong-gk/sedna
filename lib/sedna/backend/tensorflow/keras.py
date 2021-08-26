@@ -36,7 +36,7 @@ class KerasBackend(TFBackend):
                              'Type provided' + str(type(estimator)))
 
     def set_session(self):
-        if self.framework == "keras":
+        if self.framework == "tf-keras":
             from keras.backend.tensorflow_backend import set_session
         else:
             from tensorflow.python.keras.backend import set_session
@@ -46,40 +46,37 @@ class KerasBackend(TFBackend):
         hyperparams = get_func_spec(self.estimator.fit, **kwargs)
 
         x, y = train_data.x, train_data.y
-        with self.graph.as_default():
-            self.set_session()
-            if valid_data:
-                x1, y1 = valid_data.x, valid_data.y
-                hyperparams["validation_data"] = (x1, y1)
-            history = self.estimator.fit(x, y, **hyperparams)
-            self.result = history.history
+        self.set_session()
+        if valid_data:
+            x1, y1 = valid_data.x, valid_data.y
+            hyperparams["validation_data"] = (x1, y1)
+        history = self.estimator.fit(x, y, **hyperparams)
+        self.result = history.history
         self.has_load = True
 
     def _predict(self, data, **kwargs):
         hyperparams = get_func_spec(self.estimator.predict, **kwargs)
-        with self.graph.as_default():
-            self.set_session()
-            return self.estimator.predict(data, **hyperparams)
+        self.set_session()
+        return self.estimator.predict(data, **hyperparams)
 
-    def evaluate(self, valid_data, with_result=False, **kwargs):
+    def evaluate(self, data, with_result=False, **kwargs):
         if not self.has_load:
             self.load(**kwargs)
         hyperparams = get_func_spec(self.estimator.evaluate, **kwargs)
-        x, y = valid_data.x, valid_data.y
-        with self.graph.as_default():
-            self.set_session()
-            metrics = self.estimator.evaluate(x, y, **hyperparams)
-            names = self.estimator.metrics_names
-            dict_metrics = {}
-            if type(metrics) == list:
-                for metric, name in zip(metrics, names):
-                    dict_metrics[name] = metric
-            else:
-                dict_metrics[names[0]] = metrics
+        x, y = data.x, data.y
+        self.set_session()
+        metrics = self.estimator.evaluate(x, y, **hyperparams)
+        names = self.estimator.metrics_names
+        dict_metrics = {}
+        if type(metrics) == list:
+            for metric, name in zip(metrics, names):
+                dict_metrics[name] = metric
+        else:
+            dict_metrics[names[0]] = metrics
 
-            if with_result:
-                y_pred = self.predict(x, **kwargs)
-                dict_metrics["_pred"] = y_pred
+        if with_result:
+            y_pred = self.predict(x, **kwargs)
+            dict_metrics["_pred"] = y_pred
         return dict_metrics
 
     def save(self, model_url="", model_name=None):
@@ -95,7 +92,7 @@ class KerasBackend(TFBackend):
                 model_url=model_url,
                 model_name=kwargs.get("model_name", None)
             )
-        if FileOps.exists(model_url):
+        if not FileOps.exists(model_url):
             model_url = FileOps.download(model_url)
         tmp = {
             k: v for k, v in kwargs.items() if k in (

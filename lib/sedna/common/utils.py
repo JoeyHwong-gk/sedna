@@ -80,9 +80,6 @@ def get_func_spec(func, **kwargs):
     :return:
     """
 
-    if not callable(func):
-        return kwargs
-
     need_kw = getfullargspec(func)
     if need_kw.varkw == 'kwargs':
         return kwargs

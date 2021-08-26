@@ -158,7 +158,7 @@ class Estimator:
     def evaluate(
             self,
             valid_data,
-            model_path="",
+            model_url="",
             class_names="",
             input_shape=(
                     352,
@@ -168,7 +168,7 @@ class Estimator:
         validate
         """
         precision, recall, all_precisions, all_recalls = (
-            validate(model_path=model_path,
+            validate(model_path=model_url,
                      test_dataset=valid_data.x,
                      class_names=class_names,
                      input_shape=input_shape)

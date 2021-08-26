@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os.path
-
 from sedna.common.file_ops import FileOps
 from sedna.common.utils import get_func_spec
 
@@ -37,22 +35,26 @@ class CustomizeBackend(BackendBase):
         hyperparams = get_func_spec(self.estimator.predict, **kwargs)
         return self.estimator.predict(data, **hyperparams)
 
-    def save(self, **kwargs):
-        if hasattr(self.estimator, "save"):
-            varkw = get_func_spec(self.estimator.save, **kwargs)
-            return self.estimator.save(**varkw)
+    def save(self, model_url=None, **kwargs):
         model_url = self.get_model_absolute_path(
-            model_url=kwargs.get("model_url", None),
+            model_url=model_url,
             model_name=kwargs.get("model_name", None)
         )
+        kwargs["model_url"] = model_url
+        if hasattr(self.estimator, "save"):
+            varkw = get_func_spec(self.estimator.save, **kwargs)
+            self.estimator.save(**varkw)
+            return model_url
+
         return FileOps.dump(self.estimator, model_url)
 
-    def load(self, **kwargs):
+    def load(self, model_url=None, **kwargs):
+        model_url = self.get_model_absolute_path(
+            model_url=model_url,
+            model_name=kwargs.get("model_name", None)
+        )
+        kwargs["model_url"] = model_url
         if hasattr(self.estimator, "load"):
             varkw = get_func_spec(self.estimator.load, **kwargs)
             return self.estimator.load(**varkw)
-        model_url = self.get_model_absolute_path(
-            model_url=kwargs.get("model_url", None),
-            model_name=kwargs.get("model_name", None)
-        )
         self.estimator = FileOps.load(model_url)

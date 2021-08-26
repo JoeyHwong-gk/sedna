@@ -41,9 +41,14 @@ def set_backend(estimator=None, config=None, **kwargs):
         os.environ['DEVICE_CATEGORY'] = device_category
 
     expect_attr_list = (
-        "train", "predict", "load"
+        ("predict", "load"), ("train", "save")
     )
-    if all(map(lambda x: hasattr(estimator, x), expect_attr_list)):
+    if any(map(
+            lambda x: all(
+                map(lambda y: hasattr(estimator, y), x)
+            ), expect_attr_list
+        )
+    ):
         backend_type = "customize"
     if backend_type == MLFramework.TENSORFLOW.value:
         from sedna.backend.tensorflow.tensorflow import TFBackend as REGISTER

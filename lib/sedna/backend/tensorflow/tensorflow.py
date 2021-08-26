@@ -84,13 +84,14 @@ class TFBackend(BackendBase):
 
     def _predict(self, data, **kwargs):
         hyperparams = get_func_spec(self.estimator.predict, **kwargs)
-        return self.estimator.predict(data=data, **hyperparams)
+        with self.sess.as_default():
+            return self.estimator.predict(data=data, **hyperparams)
 
-    def evaluate(self, valid_data, **kwargs):
+    def evaluate(self, data, **kwargs):
         if not self.has_load:
             self.load(**kwargs)
         hyperparams = get_func_spec(self.estimator.evaluate, **kwargs)
-        return self.estimator.evaluate(valid_data=valid_data, **hyperparams)
+        return self.estimator.evaluate(data, **hyperparams)
 
     def save(self, model_url="", model_name=None):
         model_url = self.get_model_absolute_path(
@@ -121,9 +122,9 @@ class TFBackend(BackendBase):
                 model_url=model_url,
                 model_name=kwargs.get("model_name", None)
             )
-        if FileOps.exists(model_url):
+        if not FileOps.exists(model_url):
             model_url = FileOps.download(model_url)
-        if os.path.isfile(model_url) and model_url.endswith(".pb"):
+        if os.path.isfile(model_url):
             with self.graph.as_default():
                 with GFile(model_url, "rb") as handle:
                     graph_def = GraphDef()
