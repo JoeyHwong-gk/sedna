@@ -1,7 +1,7 @@
-FROM python:3.6-slim
+FROM tensorflow/tensorflow:1.15.4
 
 RUN apt update \
-  && apt install -y libgl1-mesa-glx build-essential
+  && apt install -y libgl1-mesa-glx
 
 COPY ./lib/requirements.txt /home
 
