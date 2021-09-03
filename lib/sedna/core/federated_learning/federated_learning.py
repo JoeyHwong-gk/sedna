@@ -29,7 +29,7 @@ from sedna.core.base import JobBase
 from sedna.service.client import AggregationClient
 
 
-class FederatedLearningV0(JobBase):
+class FederatedLearning(JobBase):
     """
     Federated learning enables multiple actors to build a common, robust
     machine learning model without sharing data, thus allowing to address
@@ -187,7 +187,7 @@ class FederatedLearningV0(JobBase):
                     task_info_res)
 
 
-class FederatedLearning:
+class FederatedLearningV2:
     def __init__(self, data=None, estimator=None,
                  aggregation=None, transmitter=None) -> None:
         # set parameters

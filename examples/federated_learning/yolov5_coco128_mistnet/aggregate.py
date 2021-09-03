@@ -14,14 +14,14 @@
 
 from interface import mistnet, s3_transmitter, simple_chooser
 from interface import Dataset, Estimator
-from sedna.service.server import AggregationServer
+from sedna.service.server import AggregationServerV2
 
 
 def run_server():
     data = Dataset()
     estimator = Estimator()
 
-    server = AggregationServer(
+    server = AggregationServerV2(
         data=data,
         estimator=estimator,
         aggregation=mistnet,

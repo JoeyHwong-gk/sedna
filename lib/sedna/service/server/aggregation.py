@@ -208,7 +208,7 @@ class BroadcastWs(WebSocketEndpoint):
         await self.server.send_message(self.client_id, msg)
 
 
-class AggregationServerV0(BaseServer):
+class AggregationServer(BaseServer):
     def __init__(
             self,
             aggregation: str,
@@ -270,7 +270,7 @@ class AggregationServerV0(BaseServer):
         return WSClientInfoList(clients=server.client_list)
 
 
-class AggregationServer():
+class AggregationServerV2():
     def __init__(self, data=None, estimator=None,
                  aggregation=None, transmitter=None,
                  chooser=None) -> None:

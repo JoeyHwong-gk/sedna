@@ -23,7 +23,6 @@ intermediate features.
 ```
 CLOUD_NODE="cloud-node-name"
 EDGE1_NODE="edge1-node-name"
-EDGE2_NODE="edge2-node-name"
 ```
 
 ### Install Sedna

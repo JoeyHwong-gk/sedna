@@ -14,13 +14,13 @@
 
 from interface import mistnet, s3_transmitter
 from interface import Dataset, Estimator
-from sedna.core.federated_learning import FederatedLearning
+from sedna.core.federated_learning import FederatedLearningV2
 
 def main():
     data = Dataset()
     estimator = Estimator()
 
-    fl_model = FederatedLearning(
+    fl_model = FederatedLearningV2(
         data=data,
         estimator=estimator,
         aggregation=mistnet,
