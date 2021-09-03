@@ -197,15 +197,13 @@ class FederatedLearning:
         train = Config.trainer._asdict()
 
         if data is not None:
-            for xkey in data.parameters:
-                datastore[xkey] = data.parameters[xkey]
+            datastore.update(data.parameters)
             Config.data = Config.namedtuple_from_dict(datastore)
 
         self.model = None
         if estimator is not None:
             self.model = estimator.model
-            for xkey in estimator.hyperparameters:
-                train[xkey] = estimator.hyperparameters[xkey]
+            train.update(estimator.hyperparameters)
             Config.trainer = Config.namedtuple_from_dict(train)
 
         if aggregation is not None:
@@ -218,8 +216,7 @@ class FederatedLearning:
         server["address"] = Context.get_parameters("AGG_IP")
         server["port"] = Context.get_parameters("AGG_PORT")
         if isinstance(transmitter, S3Transmitter):
-            for key in transmitter.parameters:
-                server[key] = transmitter.parameters[key]
+            server.update(transmitter.parameters)
         elif isinstance(transmitter, WSTransmitter):
             pass
 

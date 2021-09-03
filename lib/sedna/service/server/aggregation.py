@@ -281,22 +281,19 @@ class AggregationServer():
         train = Config.trainer._asdict()
 
         if data is not None:
-            for xkey in data.parameters:
-                datastore[xkey] = data.parameters[xkey]
+            datastore.update(data.parameters)
             Config.data = Config.namedtuple_from_dict(datastore)
 
         self.model = None
         if estimator is not None:
             self.model = estimator.model
-            for xkey in estimator.hyperparameters:
-                train[xkey] = estimator.hyperparameters[xkey]
+            train.update(estimator.hyperparameters)
             Config.trainer = Config.namedtuple_from_dict(train)
 
         server["address"] = "0.0.0.0"
         server["port"] = Context.get_parameters("AGG_BIND_PORT")
         if transmitter is not None:
-            for key in transmitter.parameters:
-                server[key] = transmitter.parameters[key]
+            server.update(transmitter.parameters)
 
         if aggregation is not None:
             Config.algorithm = Config.namedtuple_from_dict(
