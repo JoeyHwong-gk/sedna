@@ -12,4 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .client_choose import SimpleClientChoose
+from . import client_choose

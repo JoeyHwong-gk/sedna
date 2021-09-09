@@ -29,7 +29,9 @@ class ClassType:
     GENERAL = 'general'
     HEM = 'hard_example_mining'
     FL_AGG = 'aggregation'
-    MTL = 'multi_task_learening'
+    CL_CHOOSE = 'client_choose'
+    TRAM = "transmitter"
+    MTL = 'multi_task_learning'
     UTD = 'unseen_task_detect'
 
     ALGORITHM = 'algorithm'

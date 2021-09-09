@@ -11,9 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+import os
 import time
 import uuid
+import warnings
+import tempfile
 from typing import Any, Dict, List, Optional
 
 from fastapi import FastAPI, WebSocket
@@ -25,11 +27,11 @@ from starlette.responses import JSONResponse
 from starlette.routing import WebSocketRoute
 from starlette.types import ASGIApp, Receive, Scope, Send
 
-from sedna.algorithms.aggregation import AggClient
-from sedna.common.config import BaseConfig, Context
+from sedna.algorithms.aggregation.aggregation import AggClient
 from sedna.common.class_factory import ClassFactory, ClassType
 from sedna.common.log import LOGGER
-from sedna.common.config import Context
+from sedna.common.file_ops import FileOps
+from sedna.common.config import Context, BaseConfig
 from sedna.common.utils import get_host_ip
 from .base import BaseServer
 
@@ -271,12 +273,20 @@ class AggregationServer(BaseServer):
         return WSClientInfoList(clients=server.client_list)
 
 
-class AggregationServerV2():
+class AggregationServerV2:
     def __init__(self, data=None, estimator=None,
                  aggregation=None, transmitter=None,
-                 chooser=None) -> None:
+                 chooser=None):
         from plato.config import Config
         from plato.servers import registry as server_registry
+
+        warnings.warn(
+            """
+            AggregationServerV2 will be discard after 0.4.1.
+            Use `AggregationServer` instead.
+            """
+        )
+
         # set parameters
         server = Config.server._asdict()
         clients = Config.clients._asdict()
@@ -287,17 +297,33 @@ class AggregationServerV2():
             datastore.update(data.parameters)
             Config.data = Config.namedtuple_from_dict(datastore)
 
+        pretrained = BaseConfig.pretrained_model_url
+
+        self.temp_path = tempfile.gettempdir()
+
+        if pretrained:
+            tmp = FileOps.download(pretrained, self.temp_path)
+            pretrained = os.path.join(
+                tmp,
+                os.path.basename(pretrained)
+            )
+            if os.path.isfile(pretrained):
+                pretrained = tmp
+
         self.model = None
         if estimator is not None:
             self.model = estimator.model
-            if estimator.pretrained is not None:
-                LOGGER.info(estimator.pretrained)
-                Config.params['model_dir'] = estimator.pretrained
+            estimator.pretrained = pretrained
+            if pretrained and os.path.isdir(pretrained):
+                LOGGER.info(f"pretrained model load from {pretrained}")
+                Config.params['pretrained_model_url'] = f"{pretrained}/"
+                Config.params['model_dir'] = f"{pretrained}/"
+
             train.update(estimator.hyperparameters)
             Config.trainer = Config.namedtuple_from_dict(train)
 
         server["address"] = Context.get_parameters("AGG_BIND_IP", "0.0.0.0")
-        server["port"] = Context.get_parameters("AGG_BIND_PORT", 7363)
+        server["port"] = int(Context.get_parameters("AGG_BIND_PORT", 7363))
         if transmitter is not None:
             server.update(transmitter.parameters)
 
@@ -315,10 +341,22 @@ class AggregationServerV2():
 
         Config.server = Config.namedtuple_from_dict(server)
         Config.clients = Config.namedtuple_from_dict(clients)
-
+        self.model_save_url = Config.params['model_dir']
+        self.model_name = BaseConfig.model_name or "model_save.pb"
         # Config.store()
         # create a server
         self.server = server_registry.get(model=self.model)
+        self.server.close = self.close
 
     def start(self):
         self.server.run()
+
+    async def close(self):
+        self.server.trainer.save_model(filename=self.model_name)
+        model_save = os.path.join(
+            self.model_save_url, self.model_name
+        )
+        FileOps.upload(model_save, BaseConfig.model_url)
+        LOGGER.info(f"model save in {BaseConfig.model_url}")
+        await self.server.close_connections()
+        os._exit(0)

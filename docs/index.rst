@@ -48,6 +48,7 @@ Sedna can simply enable edge-cloud synergy capabilities to existing training and
     examples/federated_learning/surface_defect_detection/README
     examples/incremental_learning/helmet_detection/README
     examples/joint_inference/helmet_detection_inference/README
+    examples/federated_learning/yolov5_coco128_mistnet/README
     examples/lifelong_learning/atcii/README
     examples/storage/s3/*
 

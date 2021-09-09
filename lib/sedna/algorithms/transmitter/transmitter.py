@@ -13,6 +13,8 @@
 # limitations under the License.
 
 from abc import ABC, abstractmethod
+from sedna.common.config import BaseConfig
+from sedna.common.class_factory import ClassFactory, ClassType
 
 
 class AbstractTransmitter(ABC):
@@ -30,12 +32,13 @@ class AbstractTransmitter(ABC):
         pass
 
 
+@ClassFactory.register(ClassType.TRAM, alias="ws")
 class WSTransmitter(AbstractTransmitter, ABC):
     """
     An implementation of Transmitter based on WebSocket.
     """
 
-    def __init__(self):
+    def __init__(self, config=None):
         self.parameters = {}
 
     def recv(self):
@@ -45,21 +48,20 @@ class WSTransmitter(AbstractTransmitter, ABC):
         pass
 
 
+@ClassFactory.register(ClassType.TRAM, alias="s3")
 class S3Transmitter(AbstractTransmitter, ABC):
     """
     An implementation of Transmitter based on S3 protocol.
     """
 
-    def __init__(self,
-                 s3_endpoint_url,
-                 access_key,
-                 secret_key,
-                 transmitter_url):
+    def __init__(self, config=None):
+        if not config:
+            config = BaseConfig
         self.parameters = {
-            "s3_endpoint_url": s3_endpoint_url,
-            "s3_bucket": transmitter_url,
-            "access_key": access_key,
-            "secret_key": secret_key
+            "s3_endpoint_url": config.s3_endpoint_url,
+            "s3_bucket": config.agg_data_path,
+            "access_key": config.access_key_id,
+            "secret_key": config.secret_access_key,
         }
 
     def recv(self):

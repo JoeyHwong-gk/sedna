@@ -14,10 +14,9 @@
 
 
 import asyncio
-import sys
 import time
+import warnings
 
-from sedna.algorithms.transmitter import S3Transmitter, WSTransmitter
 from sedna.common.class_factory import ClassFactory, ClassType
 from sedna.common.config import BaseConfig, Context
 from sedna.common.constant import K8sResourceKindStatus
@@ -93,7 +92,8 @@ class FederatedLearning(JobBase):
         )
 
         FileOps.clean_folder([self.config.model_url], clean=False)
-        self.aggregation = self.aggregation()
+        if isinstance(self.aggregation, type):
+            self.aggregation = self.aggregation()
         self.log.info(f"{self.worker_name} model prepared")
         if callable(self.estimator):
             self.estimator = self.estimator()
@@ -187,11 +187,22 @@ class FederatedLearning(JobBase):
 
 
 class FederatedLearningV2:
+    """
+    .. deprecated:: 0.4.1
+    """
     def __init__(self, data=None, estimator=None,
-                 aggregation=None, transmitter=None) -> None:
+                 aggregation=None, transmitter=None):
 
         from plato.config import Config
         from plato.clients import registry as client_registry
+
+        warnings.warn(
+            """
+            FederatedLearningV2 will be discard after 0.4.1.
+            Use `FederatedLearning` instead.
+            """
+        )
+
         # set parameters
         server = Config.server._asdict()
         clients = Config.clients._asdict()
@@ -224,24 +235,18 @@ class FederatedLearningV2:
         Config.server = Config.namedtuple_from_dict(server)
         Config.clients = Config.namedtuple_from_dict(clients)
 
-        # Config.store()
         # create a client
         self.client = client_registry.get(model=self.model)
         self.client.configure()
 
     @classmethod
     def get_transmitter_from_config(cls):
-        if BaseConfig.transmitter == "ws":
-            return WSTransmitter()
-        elif BaseConfig.transmitter == "s3":
-            return S3Transmitter(s3_endpoint_url=BaseConfig.s3_endpoint_url,
-                                 access_key=BaseConfig.access_key_id,
-                                 secret_key=BaseConfig.secret_access_key,
-                                 transmitter_url=BaseConfig.agg_data_path)
+        transmitter = ClassFactory.get_cls(ClassType.TRAM,
+                                           BaseConfig.transmitter)
+        if not transmitter:
+            raise ValueError("Transmitter value error")
+        return transmitter(config=BaseConfig)
 
     def train(self):
-        if int(sys.version[2]) <= 6:
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(self.client.start_client())
-        else:
-            asyncio.run(self.client.start_client())
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.client.start_client())

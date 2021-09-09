@@ -20,7 +20,7 @@ from typing import List
 
 from sedna.common.class_factory import ClassFactory, ClassType
 
-__all__ = ('AggClient', 'FedAvg',)
+__all__ = ('AggClient', 'FedAvg', 'MistNet')
 
 
 class AggClient:

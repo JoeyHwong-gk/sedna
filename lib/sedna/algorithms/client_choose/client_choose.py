@@ -14,6 +14,7 @@
 
 
 import abc
+from sedna.common.class_factory import ClassFactory, ClassType
 
 
 class AbstractClientChoose(metaclass=abc.ABCMeta):
@@ -26,6 +27,7 @@ class AbstractClientChoose(metaclass=abc.ABCMeta):
         pass
 
 
+@ClassFactory.register(ClassType.CL_CHOOSE)
 class SimpleClientChoose(AbstractClientChoose):
     """
     A Simple Implementation of Client Choose.

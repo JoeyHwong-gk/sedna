@@ -17,11 +17,18 @@ from interface import Dataset, Estimator
 from sedna.common.config import BaseConfig
 from sedna.core.federated_learning import FederatedLearningV2
 
+
 def main():
     data = Dataset()
     estimator = Estimator()
-    data.parameters["data_path"] = BaseConfig.train_dataset_url.replace("robot.txt", "")
-    data.parameters["train_path"] = os.path.join(data.parameters["data_path"], "./coco128/images/train2017/")
+
+    train_dataset_url = BaseConfig.train_dataset_url
+
+    if os.path.isfile(train_dataset_url):
+        train_dataset_url = os.path.dirname(BaseConfig.train_dataset_url)
+    data.parameters["data_path"] = train_dataset_url
+    data.parameters["train_path"] = os.path.join(train_dataset_url,
+                                                 "./coco128/images/train2017/")
     data.parameters["test_path"] = data.parameters["train_path"]
     fl_model = FederatedLearningV2(
         data=data,
@@ -30,6 +37,7 @@ def main():
         transmitter=s3_transmitter)
 
     fl_model.train()
+
 
 if __name__ == '__main__':
     main()

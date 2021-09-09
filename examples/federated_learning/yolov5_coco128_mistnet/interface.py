@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sedna.algorithms.aggregation import MistNet
-from sedna.algorithms.client_choose import SimpleClientChoose
+from sedna.algorithms.aggregation.aggregation import MistNet
+from sedna.algorithms.client_choose.client_choose import SimpleClientChoose
 from sedna.common.config import Context
 from sedna.core.federated_learning import FederatedLearningV2
 
@@ -136,12 +136,13 @@ class Estimator:
     def __init__(self) -> None:
         self.model = None
         self.pretrained = None
+        self.saved = None
         self.hyperparameters = {
             "type": "yolov5",
             "rounds": 1,
             "target_accuracy": 0.99,
-            "epochs": 500,
-            "batch_size": 16,
+            "epochs": int(Context.get_parameters("EPOCHS", 500)),
+            "batch_size": int(Context.get_parameters("BATCH_SIZE", 16)),
             "optimizer": "SGD",
             "linear_lr": False,
             # The machine learning model
